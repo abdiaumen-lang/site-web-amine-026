@@ -156,15 +156,25 @@ function ProductCatalogContent() {
                                                 )}
                                                 <span className="text-primary text-xl font-black">{product.price?.toLocaleString()} DA</span>
                                             </div>
-                                            <button
-                                                className={`p-2.5 rounded-lg transition-colors ${product.stock > 0
+                                            <div className="flex gap-2">
+                                                <Link
+                                                    href="/"
+                                                    className="p-2.5 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors flex items-center justify-center -ml-1"
+                                                    title="Go Back to Home"
+                                                >
+                                                    <span className="material-symbols-outlined text-[20px]">arrow_back</span>
+                                                </Link>
+                                                <button
+                                                    className={`p-2.5 rounded-lg transition-colors ${product.stock > 0
                                                         ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-primary hover:text-white dark:hover:text-white'
                                                         : 'bg-slate-200 dark:bg-slate-700 text-slate-400 cursor-not-allowed'
-                                                    }`}
-                                                disabled={product.stock === 0}
-                                            >
-                                                <span className="material-symbols-outlined text-[20px]">shopping_cart</span>
-                                            </button>
+                                                        }`}
+                                                    disabled={product.stock === 0}
+                                                    title="Add to Cart"
+                                                >
+                                                    <span className="material-symbols-outlined text-[20px]">shopping_cart</span>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

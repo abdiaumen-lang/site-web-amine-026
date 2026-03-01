@@ -7,6 +7,9 @@ export default function CheckoutHeader() {
             <div className="max-w-[1440px] mx-auto flex items-center justify-between whitespace-nowrap">
                 <div className="flex items-center gap-4 md:gap-8">
                     <div className="flex items-center gap-2">
+                        <Link href="/" className="flex items-center gap-2 text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors mr-2">
+                            <span className="material-symbols-outlined text-[24px]">arrow_back</span>
+                        </Link>
                         <MobileMenu />
                         <Link href="/" className="flex items-center gap-2 text-primary hover:opacity-80 transition-opacity">
                             <div className="size-10 bg-primary text-white rounded-full flex items-center justify-center font-bold text-2xl">

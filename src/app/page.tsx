@@ -148,9 +148,18 @@ export default async function Home() {
                     <span className="text-slate-400 text-xs line-through">280,000 DA</span>
                     <span className="text-primary text-xl font-black">238,000 DA</span>
                   </div>
-                  <button className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 p-2.5 rounded-lg hover:bg-primary hover:text-white dark:hover:text-white transition-colors">
-                    <span className="material-symbols-outlined text-[20px]">shopping_cart</span>
-                  </button>
+                  <div className="flex gap-2">
+                    <Link
+                      href="/"
+                      className="p-2.5 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors flex items-center justify-center -ml-1"
+                      title="Go Back to Home"
+                    >
+                      <span className="material-symbols-outlined text-[20px]">arrow_back</span>
+                    </Link>
+                    <button className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 p-2.5 rounded-lg hover:bg-primary hover:text-white dark:hover:text-white transition-colors">
+                      <span className="material-symbols-outlined text-[20px]">shopping_cart</span>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -176,9 +185,18 @@ export default async function Home() {
                   <div className="flex flex-col">
                     <span className="text-primary text-xl font-black">95,500 DA</span>
                   </div>
-                  <button className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 p-2.5 rounded-lg hover:bg-primary hover:text-white dark:hover:text-white transition-colors">
-                    <span className="material-symbols-outlined text-[20px]">shopping_cart</span>
-                  </button>
+                  <div className="flex gap-2">
+                    <Link
+                      href="/"
+                      className="p-2.5 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors flex items-center justify-center -ml-1"
+                      title="Go Back to Home"
+                    >
+                      <span className="material-symbols-outlined text-[20px]">arrow_back</span>
+                    </Link>
+                    <button className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 p-2.5 rounded-lg hover:bg-primary hover:text-white dark:hover:text-white transition-colors">
+                      <span className="material-symbols-outlined text-[20px]">shopping_cart</span>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -205,9 +223,18 @@ export default async function Home() {
                   <div className="flex flex-col">
                     <span className="text-primary text-xl font-black">145,000 DA</span>
                   </div>
-                  <button className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 p-2.5 rounded-lg hover:bg-primary hover:text-white dark:hover:text-white transition-colors">
-                    <span className="material-symbols-outlined text-[20px]">shopping_cart</span>
-                  </button>
+                  <div className="flex gap-2">
+                    <Link
+                      href="/"
+                      className="p-2.5 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors flex items-center justify-center -ml-1"
+                      title="Go Back to Home"
+                    >
+                      <span className="material-symbols-outlined text-[20px]">arrow_back</span>
+                    </Link>
+                    <button className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 p-2.5 rounded-lg hover:bg-primary hover:text-white dark:hover:text-white transition-colors">
+                      <span className="material-symbols-outlined text-[20px]">shopping_cart</span>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -233,9 +260,18 @@ export default async function Home() {
                   <div className="flex flex-col">
                     <span className="text-primary text-xl font-black">112,000 DA</span>
                   </div>
-                  <button className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 p-2.5 rounded-lg hover:bg-primary hover:text-white dark:hover:text-white transition-colors">
-                    <span className="material-symbols-outlined text-[20px]">shopping_cart</span>
-                  </button>
+                  <div className="flex gap-2">
+                    <Link
+                      href="/"
+                      className="p-2.5 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors flex items-center justify-center -ml-1"
+                      title="Go Back to Home"
+                    >
+                      <span className="material-symbols-outlined text-[20px]">arrow_back</span>
+                    </Link>
+                    <button className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 p-2.5 rounded-lg hover:bg-primary hover:text-white dark:hover:text-white transition-colors">
+                      <span className="material-symbols-outlined text-[20px]">shopping_cart</span>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

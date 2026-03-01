@@ -24,7 +24,7 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
       </head>
       <body
-        className={`${inter.variable} bg-white dark:bg-slate-900 font-display text-slate-900 dark:text-slate-100 antialiased overflow-x-hidden`}
+        className={`${inter.variable} bg-white md:dark:bg-slate-900 font-display text-slate-900 md:dark:text-slate-100 antialiased overflow-x-hidden`}
       >
         {children}
       </body>
