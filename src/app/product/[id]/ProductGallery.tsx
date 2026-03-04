@@ -19,7 +19,7 @@ export default function ProductGallery({ images, fallbackImage, productName }: P
                 <img
                     src={mainImage}
                     alt={productName}
-                    className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal group-hover:scale-110 transition-transform duration-500"
+                    className="w-full h-full object-contain md:group-hover:scale-110 transition-transform duration-500"
                 />
             </div>
 
@@ -30,14 +30,14 @@ export default function ProductGallery({ images, fallbackImage, productName }: P
                             key={idx}
                             onClick={() => setMainImage(img)}
                             className={`relative aspect-square w-24 flex-shrink-0 bg-slate-50 dark:bg-slate-900 rounded-xl p-2 border-2 transition-all ${mainImage === img
-                                    ? 'border-primary'
-                                    : 'border-transparent hover:border-slate-300 dark:hover:border-slate-600'
+                                ? 'border-primary'
+                                : 'border-transparent hover:border-slate-300 dark:hover:border-slate-600'
                                 }`}
                         >
                             <img
                                 src={img}
                                 alt={`${productName} thumbnail ${idx + 1}`}
-                                className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal"
+                                className="w-full h-full object-contain"
                             />
                         </button>
                     ))}

@@ -139,7 +139,7 @@ export default async function Home() {
                     </span>
                   )}
                   <Image width={400} height={300} alt={product.name}
-                    className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-contain md:group-hover:scale-105 transition-transform duration-500"
                     src={product.images?.[0] || 'https://via.placeholder.com/400x300?text=No+Image'}
                   />
                   <button className="absolute top-3 right-3 p-2 rounded-full bg-white dark:bg-slate-800 shadow-sm opacity-0 group-hover:opacity-100 transition-opacity text-slate-400 hover:text-red-500">

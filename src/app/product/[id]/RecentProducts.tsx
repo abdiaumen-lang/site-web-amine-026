@@ -44,12 +44,12 @@ export default async function RecentProducts({ currentProductId }: RecentProduct
                         className="w-[120px] xs:w-[140px] sm:w-[160px] md:w-auto min-w-[120px] flex-shrink-0 group snap-start"
                     >
                         <div className="flex flex-col gap-2 md:gap-3">
-                            <div className="aspect-square rounded-lg md:rounded-xl bg-slate-50 dark:bg-slate-800/50 overflow-hidden border border-slate-100 dark:border-slate-800 transition-all group-hover:shadow-md group-hover:scale-[1.02] group-hover:border-primary/20 relative">
+                            <div className="aspect-square rounded-lg md:rounded-xl bg-slate-50 dark:bg-slate-800/50 overflow-hidden border border-slate-100 dark:border-slate-800 transition-all md:group-hover:shadow-md md:group-hover:scale-[1.02] md:group-hover:border-primary/20 relative">
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img
                                     src={product.image || (product.images && product.images[0]) || "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?q=80&w=400&auto=format"}
                                     alt={product.name}
-                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                    className="w-full h-full object-cover transition-transform duration-700 md:group-hover:scale-110"
                                     loading="lazy"
                                     decoding="async"
                                 />

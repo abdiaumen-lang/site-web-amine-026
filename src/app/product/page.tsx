@@ -214,7 +214,7 @@ function ProductCatalogContent() {
                                         )}
                                         <img
                                             alt={product.name}
-                                            className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal group-hover:scale-105 transition-transform duration-500"
+                                            className="w-full h-full object-contain md:group-hover:scale-105 transition-transform duration-500"
                                             src={product.image || "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?q=80&w=400&auto=format"}
                                             loading="lazy"
                                             decoding="async"

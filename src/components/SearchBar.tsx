@@ -119,7 +119,7 @@ export default function SearchBar() {
                                 >
                                     <div className="size-10 shrink-0 bg-slate-100 dark:bg-slate-900 rounded-md overflow-hidden flex items-center justify-center p-1">
                                         {/* eslint-disable-next-line @next/next/no-img-element */}
-                                        <img src={product.image || "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?q=80&w=100&auto=format"} alt={product.name} className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal" />
+                                        <img src={product.image || "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?q=80&w=100&auto=format"} alt={product.name} className="w-full h-full object-contain" />
                                     </div>
                                     <div className="flex-1 min-w-0">
                                         <p className="text-sm font-semibold text-slate-900 dark:text-white truncate">{product.name}</p>
