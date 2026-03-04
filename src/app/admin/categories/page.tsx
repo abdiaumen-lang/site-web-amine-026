@@ -35,7 +35,6 @@ export default function CategoriesAdminPage() {
     const [showCatModal, setShowCatModal] = useState(false);
     const [editingCat, setEditingCat] = useState<Category | null>(null);
     const [catName, setCatName] = useState("");
-    const [catLink, setCatLink] = useState("");
     const [catIcon, setCatIcon] = useState("");
 
     // Form states for Subcategory
@@ -89,25 +88,34 @@ export default function CategoriesAdminPage() {
 
         try {
             if (editingCat) {
-                await supabase
+                const { error } = await supabase
                     .from("categories")
-                    .update({ name: catName, link: catLink, icon: catIcon })
+                    .update({
+                        name: catName,
+                        slug: catName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, ''),
+                        icon: catIcon
+                    })
                     .eq("id", editingCat.id);
+                if (error) throw error;
             } else {
-                const actualLink = catLink || "/product";
-                await supabase
+                const { error } = await supabase
                     .from("categories")
-                    .insert([{ name: catName, link: actualLink, icon: catIcon, image: '' }]);
+                    .insert([{
+                        name: catName,
+                        slug: catName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, ''),
+                        icon: catIcon,
+                        image: '' // Fallback image if necessary, but empty should suffice if nullable or not enforced
+                    }]);
+                if (error) throw error;
             }
             setShowCatModal(false);
             setEditingCat(null);
             setCatName("");
-            setCatLink("");
             setCatIcon("");
             fetchCategories();
         } catch (error) {
             console.error(error);
-            alert("Erreur lors de l'enregistrement de la catégorie");
+            alert("Erreur lors de l'enregistrement de la catégorie: " + (error as any).message);
         } finally {
             setIsLoading(false);
         }
@@ -131,7 +139,6 @@ export default function CategoriesAdminPage() {
     const openCreateCatModal = () => {
         setEditingCat(null);
         setCatName("");
-        setCatLink("");
         setCatIcon("category");
         setShowCatModal(true);
     };
@@ -140,7 +147,6 @@ export default function CategoriesAdminPage() {
         e.stopPropagation();
         setEditingCat(cat);
         setCatName(cat.name);
-        setCatLink(cat.link || "");
         setCatIcon(cat.icon || "");
         setShowCatModal(true);
     };
@@ -152,14 +158,16 @@ export default function CategoriesAdminPage() {
 
         try {
             if (editingSub) {
-                await supabase
+                const { error } = await supabase
                     .from("subcategories")
                     .update({ name: subName, slug: subSlug })
                     .eq("id", editingSub.id);
+                if (error) throw error;
             } else {
-                await supabase
+                const { error } = await supabase
                     .from("subcategories")
                     .insert([{ category_id: selectedCategory.id, name: subName, slug: subSlug }]);
+                if (error) throw error;
             }
             setShowSubModal(false);
             setEditingSub(null);
@@ -168,7 +176,7 @@ export default function CategoriesAdminPage() {
             fetchSubcategories(selectedCategory.id);
         } catch (error) {
             console.error(error);
-            alert("Erreur lors de l'enregistrement de la sous-catégorie");
+            alert("Erreur lors de l'enregistrement de la sous-catégorie: " + (error as any).message);
         } finally {
             setIsLoading(false);
         }
@@ -388,16 +396,7 @@ export default function CategoriesAdminPage() {
                                     placeholder="ex: Électroménager"
                                 />
                             </div>
-                            <div className="mb-4">
-                                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Lien (Optionnel)</label>
-                                <input
-                                    type="text"
-                                    value={catLink}
-                                    onChange={(e) => setCatLink(e.target.value)}
-                                    className="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-primary focus:border-primary p-2.5"
-                                    placeholder="ex: /product?category=..."
-                                />
-                            </div>
+
                             <div className="mb-6">
                                 <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Nom de l'icône Material</label>
                                 <input
