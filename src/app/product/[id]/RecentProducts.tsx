@@ -24,7 +24,7 @@ export default async function RecentProducts({ currentProductId }: RecentProduct
     if (!products || products.length === 0) return null;
 
     return (
-        <div className="mt-12 md:mt-16 bg-white dark:bg-slate-900 rounded-[20px] md:rounded-[24px] p-5 md:p-8 shadow-sm border border-slate-100 dark:border-slate-800 max-w-6xl mx-auto">
+        <div className="mt-12 md:mt-16 bg-white dark:bg-slate-900 rounded-[20px] md:rounded-[24px] p-5 md:p-8 shadow-sm border border-slate-100 dark:border-slate-800 max-w-5xl mx-auto">
             <div className="flex items-center justify-between mb-5 md:mb-6">
                 <h2 className="text-lg md:text-xl font-black text-slate-900 dark:text-white flex items-center gap-2">
                     <span className="material-symbols-outlined text-primary text-[18px] md:text-[22px]">new_releases</span>
@@ -36,12 +36,12 @@ export default async function RecentProducts({ currentProductId }: RecentProduct
                 </Link>
             </div>
 
-            <div className="flex md:grid md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4 overflow-x-auto pb-4 md:pb-0 -mx-1 px-1 snap-x select-none" style={{ scrollbarWidth: 'none' }}>
+            <div className="flex md:grid md:grid-cols-5 lg:grid-cols-6 gap-3 md:gap-4 overflow-x-auto pb-4 md:pb-0 -mx-1 px-1 snap-x select-none" style={{ scrollbarWidth: 'none' }}>
                 {(products as Product[]).map((product) => (
                     <Link
                         key={product.id}
                         href={`/product/${product.id}`}
-                        className="min-w-[120px] xs:min-w-[140px] md:min-w-0 flex-shrink-0 group snap-start"
+                        className="w-[120px] xs:w-[140px] sm:w-[160px] md:w-auto min-w-[120px] flex-shrink-0 group snap-start"
                     >
                         <div className="flex flex-col gap-2 md:gap-3">
                             <div className="aspect-square rounded-lg md:rounded-xl bg-slate-50 dark:bg-slate-800/50 overflow-hidden border border-slate-100 dark:border-slate-800 transition-all group-hover:shadow-md group-hover:scale-[1.02] group-hover:border-primary/20 relative">
