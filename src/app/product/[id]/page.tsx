@@ -15,7 +15,7 @@ import LandingFeatures from "@/components/LandingFeatures";
 import LandingTestimonials from "@/components/LandingTestimonials";
 
 
-export const dynamic = 'force-dynamic'; // Force real-time fetching to prevent stale cache on mobile/desktop
+export const revalidate = 60; // Cache the product page for 60 seconds for ultra-fast edge loading
 
 const sanitizeOptions = {
     allowedTags: sanitizeHtml.defaults.allowedTags.concat([

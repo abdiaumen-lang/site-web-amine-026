@@ -19,33 +19,53 @@ function ProductCatalogContent() {
         e.preventDefault();
         e.stopPropagation();
 
+        if (addingToCart[productId]) return; // Prevent double-clicks
+
+        // Optimistic UI: Immediately show loading state
         setAddingToCart(prev => ({ ...prev, [productId]: true }));
 
         try {
+            // First check if user is logged in natively
+            const { data: { user } } = await supabase.auth.getUser();
+
+            if (!user) {
+                // Instantly support guest cart via localStorage
+                const guestCart = JSON.parse(localStorage.getItem('guestCart') || '[]');
+                const existingItemIndex = guestCart.findIndex((item: any) => item.product_id === productId);
+
+                if (existingItemIndex > -1) {
+                    guestCart[existingItemIndex].quantity += 1;
+                } else {
+                    guestCart.push({ id: crypto.randomUUID(), product_id: productId, quantity: 1, created_at: new Date().toISOString() });
+                }
+
+                localStorage.setItem('guestCart', JSON.stringify(guestCart));
+                window.dispatchEvent(new Event('cartUpdated'));
+
+                // Keep the success state active for a moment
+                setTimeout(() => setAddingToCart(prev => ({ ...prev, [productId]: false })), 600);
+                return;
+            }
+
+            // Real API call for authenticated users
             const response = await fetch('/api/cart', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ productId, quantity: 1 })
             });
 
-            if (response.status === 401) {
-                alert('Veuillez vous connecter pour ajouter un produit au panier.');
-                return;
-            }
-
             if (!response.ok) {
                 const err = await response.json();
                 throw new Error(err.error || 'Erreur lors de l\'ajout au panier');
             }
 
-            alert('Produit ajouté au panier avec succès !');
-            // Trigger a custom event to update cart badge later
             window.dispatchEvent(new Event('cartUpdated'));
         } catch (error: any) {
             console.error('Failed to add to cart:', error);
-            alert(error.message);
+            alert(error.message); // Only alert on actual failure
         } finally {
-            setAddingToCart(prev => ({ ...prev, [productId]: false }));
+            // Slight delay before removing loading spinner looks better than instant flash
+            setTimeout(() => setAddingToCart(prev => ({ ...prev, [productId]: false })), 600);
         }
     };
 
