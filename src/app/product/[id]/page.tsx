@@ -149,6 +149,35 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                             </div>
                         </div>
 
+                        {/* Uploaded Media from landing_data.media */}
+                        {product.landing_data?.media && product.landing_data.media.length > 0 && (
+                            <div className="mb-12 w-full animate-fade-in-up">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-5xl mx-auto">
+                                    {product.landing_data.media.map((item: any, idx: number) => (
+                                        <div key={idx} className="rounded-2xl overflow-hidden shadow-lg border border-slate-100 dark:border-slate-800 bg-black flex items-center justify-center">
+                                            {item.type === 'video' ? (
+                                                <video
+                                                    src={item.url}
+                                                    controls
+                                                    className="w-full h-auto max-h-[600px] object-contain"
+                                                />
+                                            ) : (
+                                                <div className="w-full h-full relative">
+                                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                                    <img
+                                                        src={item.url}
+                                                        alt={`Media ${idx + 1} pour ${product.name}`}
+                                                        className="w-full h-auto max-h-[600px] object-cover"
+                                                        loading="lazy"
+                                                    />
+                                                </div>
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
                         {/* Specifications block */}
                         {product.specifications && (
                             <div className="w-full mb-12">
@@ -194,35 +223,6 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                         {product.landing_data?.videos && product.landing_data.videos.length > 0 && (
                             <div className="mb-12 w-full animate-fade-in-up">
                                 <VideoGallery videos={product.landing_data.videos} />
-                            </div>
-                        )}
-
-                        {/* Uploaded Media from landing_data.media */}
-                        {product.landing_data?.media && product.landing_data.media.length > 0 && (
-                            <div className="mb-12 w-full animate-fade-in-up">
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-5xl mx-auto">
-                                    {product.landing_data.media.map((item: any, idx: number) => (
-                                        <div key={idx} className="rounded-2xl overflow-hidden shadow-lg border border-slate-100 dark:border-slate-800 bg-black flex items-center justify-center">
-                                            {item.type === 'video' ? (
-                                                <video
-                                                    src={item.url}
-                                                    controls
-                                                    className="w-full h-auto max-h-[600px] object-contain"
-                                                />
-                                            ) : (
-                                                <div className="w-full h-full relative">
-                                                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                                                    <img
-                                                        src={item.url}
-                                                        alt={`Media ${idx + 1} pour ${product.name}`}
-                                                        className="w-full h-auto max-h-[600px] object-cover"
-                                                        loading="lazy"
-                                                    />
-                                                </div>
-                                            )}
-                                        </div>
-                                    ))}
-                                </div>
                             </div>
                         )}
                     </div>
