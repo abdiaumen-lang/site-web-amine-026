@@ -13,6 +13,7 @@ import SocialLinks from "@/components/SocialLinks";
 import VideoGallery from "@/components/VideoGallery";
 import LandingFeatures from "@/components/LandingFeatures";
 import LandingTestimonials from "@/components/LandingTestimonials";
+import InteractiveStarRating from "@/components/InteractiveStarRating";
 
 
 export const revalidate = 60; // Cache the product page for 60 seconds for ultra-fast edge loading
@@ -93,16 +94,9 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                                 {product.name}
                             </h1>
 
-                            {/* Ratings (Static for now, but ready for dynamic integration) */}
-                            <div className="flex items-center gap-2 mb-6">
-                                <div className="flex text-yellow-400">
-                                    {[1, 2, 3, 4, 5].map((star) => (
-                                        <span key={star} className={`material-symbols-outlined ${product.rating >= star ? 'fill-current' : 'text-slate-200 dark:text-slate-700'}`}>
-                                            star
-                                        </span>
-                                    ))}
-                                </div>
-                                <span className="text-slate-500 font-medium">{product.rating || 0}/5</span>
+                            {/* Interactive Ratings */}
+                            <div className="mb-6">
+                                <InteractiveStarRating productId={product.id} />
                             </div>
 
                             <div className="flex flex-col gap-1 mb-8">
