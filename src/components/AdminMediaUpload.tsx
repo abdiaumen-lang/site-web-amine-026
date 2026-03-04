@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+import { supabase } from "@/lib/supabase";
 
 export type MediaItem = {
     url: string;
@@ -36,30 +37,41 @@ export default function AdminMediaUpload({ media, onChange }: AdminMediaUploadPr
 
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
-            const formData = new FormData();
-            formData.append("file", file);
+
+            if (file.size > 20 * 1024 * 1024) {
+                setError("Fichier trop volumineux. La limite est de 20MB.");
+                continue;
+            }
 
             try {
-                const response = await fetch("/api/admin/upload-media", {
-                    method: "POST",
-                    body: formData,
+                const timestamp = Date.now();
+                const ext = file.name.split('.').pop();
+                const fileName = `${timestamp}_${Math.random().toString(36).substring(7)}.${ext}`;
+                const filePath = `landing/${fileName}`;
+
+                // Upload direct via le client Supabase
+                const { error: uploadError } = await supabase.storage
+                    .from("landing_media")
+                    .upload(filePath, file, {
+                        cacheControl: '3600',
+                        upsert: false
+                    });
+
+                if (uploadError) {
+                    throw uploadError;
+                }
+
+                const { data } = supabase.storage
+                    .from("landing_media")
+                    .getPublicUrl(filePath);
+
+                uploadedMedia.push({
+                    url: data.publicUrl,
+                    type: file.type.startsWith('video') ? 'video' : 'image',
+                    name: file.name,
+                    size: file.size
                 });
 
-                if (!response.ok) {
-                    const errDetail = await response.json();
-                    throw new Error(errDetail.error || "Erreur lors du téléchargement. Vérifiez la taille du fichier (<20MB) et le format.");
-                }
-
-                const data = await response.json();
-
-                if (data.success) {
-                    uploadedMedia.push({
-                        url: data.url,
-                        type: data.type,
-                        name: data.name,
-                        size: data.size
-                    });
-                }
             } catch (err: any) {
                 console.error("Upload error:", err);
                 setError(err.message || "Impossible de télécharger ce fichier.");
@@ -81,17 +93,20 @@ export default function AdminMediaUpload({ media, onChange }: AdminMediaUploadPr
     const handleDelete = async (url: string) => {
         setError(null);
         try {
-            const response = await fetch("/api/admin/upload-media", {
-                method: "DELETE",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ url }),
-            });
+            const urlObj = new URL(url);
+            const pathParts = urlObj.pathname.split('/landing_media/');
+            if (pathParts.length < 2) {
+                throw new Error("URL invalide.");
+            }
 
-            if (!response.ok) {
-                const errDetail = await response.json();
-                throw new Error(errDetail.error || "Erreur lors de la suppression.");
+            const filePath = decodeURIComponent(pathParts[1]);
+
+            const { error: deleteError } = await supabase.storage
+                .from("landing_media")
+                .remove([filePath]);
+
+            if (deleteError) {
+                throw deleteError;
             }
 
             const updatedMedia = media.filter(item => item.url !== url);
