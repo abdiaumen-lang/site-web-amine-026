@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
     console.log(`[Middleware] Request for: ${request.nextUrl.pathname}`);
 
     let response = NextResponse.next({ request });
