@@ -28,6 +28,7 @@ export interface WebsiteSettings {
     theme_primary_color?: string | null;
     theme_font_family?: string | null;
     menu_bg_color?: string | null;
+    top_bar_text?: string | null;
     updated_at: string;
 }
 

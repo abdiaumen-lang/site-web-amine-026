@@ -38,6 +38,7 @@ export default function AdminSettingsPage() {
     const [themePrimaryColor, setThemePrimaryColor] = useState<string>("#FF6B00");
     const [themeFontFamily, setThemeFontFamily] = useState<string>("Inter");
     const [menuBgColor, setMenuBgColor] = useState<string>("#1a1525");
+    const [topBarText, setTopBarText] = useState<string>("");
 
     const [uploading, setUploading] = useState(false);
     const [successMessage, setSuccessMessage] = useState("");
@@ -69,6 +70,7 @@ export default function AdminSettingsPage() {
             setThemePrimaryColor(settings.theme_primary_color || "#FF6B00");
             setThemeFontFamily(settings.theme_font_family || "Inter");
             setMenuBgColor(settings.menu_bg_color || "#1a1525");
+            setTopBarText(settings.top_bar_text || "");
         }
     }, [settings]);
 
@@ -137,6 +139,7 @@ export default function AdminSettingsPage() {
                 theme_primary_color: themePrimaryColor,
                 theme_font_family: themeFontFamily,
                 menu_bg_color: menuBgColor,
+                top_bar_text: topBarText || null,
                 updated_at: new Date().toISOString(),
             };
 
@@ -228,6 +231,48 @@ export default function AdminSettingsPage() {
                                 <p>{errorMessage}</p>
                             </div>
                         )}
+
+                        {/* Top Bar / Marquee Text Section */}
+                        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+                            <div className="p-6 md:p-8">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <div className="w-10 h-10 bg-[#FF6600]/10 rounded-xl flex items-center justify-center">
+                                        <span className="material-symbols-outlined text-[#FF6600]">breaking_news</span>
+                                    </div>
+                                    <div>
+                                        <h2 className="text-lg font-bold text-slate-900 dark:text-white">Bandeau défilant</h2>
+                                        <p className="text-sm text-slate-500">Le texte qui défile en haut du site (barre orange).</p>
+                                    </div>
+                                </div>
+
+                                {/* Preview */}
+                                <div className="mb-4 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700">
+                                    <div className="bg-[#FF6600] text-white text-xs font-bold py-2 overflow-hidden whitespace-nowrap">
+                                        <div className="animate-marquee-smooth">
+                                            <span className="px-8">
+                                                {topBarText || "🚀 Livraison offerte à Alger à partir de 50 000 DA ! | 📞 Contactez-nous : +213 555 123 456 | 🏷️ Offres spéciales sur l'électroménager cette semaine !"}
+                                            </span>
+                                            <span className="px-8">
+                                                {topBarText || "🚀 Livraison offerte à Alger à partir de 50 000 DA ! | 📞 Contactez-nous : +213 555 123 456 | 🏷️ Offres spéciales sur l'électroménager cette semaine !"}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <p className="text-[10px] text-slate-400 text-center py-1 bg-slate-50 dark:bg-slate-900">Aperçu en direct</p>
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Texte du bandeau</label>
+                                    <textarea
+                                        value={topBarText}
+                                        onChange={(e) => setTopBarText(e.target.value)}
+                                        placeholder="🚀 Livraison offerte à Alger à partir de 50 000 DA ! | 📞 Contactez-nous : +213 555 123 456"
+                                        rows={3}
+                                        className="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 px-4 py-2.5 text-sm focus:ring-primary focus:border-primary resize-none"
+                                    />
+                                    <p className="text-xs text-slate-500 mt-2">Utilisez le symbole <code className="bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded">|</code> pour séparer les messages. Ajoutez des emojis pour rendre le texte plus attrayant. Laissez vide pour utiliser le texte par défaut.</p>
+                                </div>
+                            </div>
+                        </div>
 
                         <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
                             <div className="p-6 md:p-8 space-y-8">

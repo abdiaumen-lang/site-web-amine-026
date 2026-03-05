@@ -36,9 +36,15 @@ export default function HomeHeader() {
 
     return (
         <>
-            <div className="w-full bg-[#FF6600] text-white text-xs font-bold py-2 text-center tracking-wide overflow-hidden whitespace-nowrap">
-                <div className="inline-block animate-marquee px-4">
-                    🚀 Livraison offerte à Alger à partir de 50 000 DA ! | 📞 Contactez-nous : +213 555 123 456 | 🏷️ Offres spéciales sur l'électroménager cette semaine !
+            <div className="w-full bg-[#FF6600] text-white text-xs font-bold py-2 overflow-hidden whitespace-nowrap">
+                <div className="animate-marquee-smooth">
+                    {/* Text duplicated for seamless infinite loop */}
+                    <span className="px-8">
+                        {settings?.top_bar_text || "🚀 Livraison offerte à Alger à partir de 50 000 DA ! | 📞 Contactez-nous : +213 555 123 456 | 🏷️ Offres spéciales sur l'électroménager cette semaine !"}
+                    </span>
+                    <span className="px-8">
+                        {settings?.top_bar_text || "🚀 Livraison offerte à Alger à partir de 50 000 DA ! | 📞 Contactez-nous : +213 555 123 456 | 🏷️ Offres spéciales sur l'électroménager cette semaine !"}
+                    </span>
                 </div>
             </div>
             <header className="sticky top-0 z-50 bg-white/95 dark:bg-background-dark/95 backdrop-blur-sm border-b border-solid border-slate-200 dark:border-slate-800 shadow-sm relative">
