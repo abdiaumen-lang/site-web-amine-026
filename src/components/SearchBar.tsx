@@ -4,12 +4,25 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 
-export default function SearchBar() {
+interface SearchBarProps {
+    autoFocus?: boolean;
+    onSearch?: () => void; // called when user navigates to a result
+}
+
+export default function SearchBar({ autoFocus = false, onSearch }: SearchBarProps) {
     const [searchQuery, setSearchQuery] = useState("");
     const [searchResults, setSearchResults] = useState<any[]>([]);
     const [isSearching, setIsSearching] = useState(false);
     const [showResults, setShowResults] = useState(false);
     const wrapperRef = useRef<HTMLDivElement>(null);
+    const inputRef = useRef<HTMLInputElement>(null);
+
+    // Auto-focus support
+    useEffect(() => {
+        if (autoFocus && inputRef.current) {
+            inputRef.current.focus();
+        }
+    }, [autoFocus]);
 
     // Close results when clicking outside
     useEffect(() => {
@@ -61,7 +74,7 @@ export default function SearchBar() {
             } else {
                 setSearchResults([]);
             }
-        }, 300); // 300ms debounce
+        }, 300);
 
         return () => {
             isMounted = false;
@@ -74,7 +87,13 @@ export default function SearchBar() {
         if (searchQuery.trim()) {
             window.location.href = `/product?search=${encodeURIComponent(searchQuery.trim())}`;
             setShowResults(false);
+            onSearch?.();
         }
+    };
+
+    const handleResultClick = () => {
+        setShowResults(false);
+        onSearch?.();
     };
 
     return (
@@ -84,6 +103,7 @@ export default function SearchBar() {
                     <span className="material-symbols-outlined text-[20px]">search</span>
                 </button>
                 <input
+                    ref={inputRef}
                     name="search"
                     value={searchQuery}
                     onChange={(e) => {
@@ -99,6 +119,17 @@ export default function SearchBar() {
                     placeholder="Rechercher un produit, une marque, une référence..."
                     type="search"
                 />
+                {/* Clear button */}
+                {searchQuery && (
+                    <button
+                        type="button"
+                        onClick={() => { setSearchQuery(""); setSearchResults([]); inputRef.current?.focus(); }}
+                        className="mr-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
+                        aria-label="Effacer"
+                    >
+                        <span className="material-symbols-outlined text-[18px]">close</span>
+                    </button>
+                )}
             </form>
 
             {/* Dropdown Results */}
@@ -114,7 +145,7 @@ export default function SearchBar() {
                                 <Link
                                     key={product.id}
                                     href={`/product/${product.id}`}
-                                    onClick={() => setShowResults(false)}
+                                    onClick={handleResultClick}
                                     className="flex items-center gap-3 p-3 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors border-b border-slate-100 dark:border-slate-700/50 last:border-0"
                                 >
                                     <div className="size-10 shrink-0 bg-slate-100 dark:bg-slate-900 rounded-md overflow-hidden flex items-center justify-center p-1">
@@ -133,7 +164,7 @@ export default function SearchBar() {
                             <div className="p-2 border-t border-slate-100 dark:border-slate-700/50">
                                 <Link
                                     href={`/product?search=${encodeURIComponent(searchQuery.trim())}`}
-                                    onClick={() => setShowResults(false)}
+                                    onClick={handleResultClick}
                                     className="block p-2 text-center text-sm font-semibold text-primary hover:bg-slate-50 dark:hover:bg-slate-700 rounded-lg transition-colors"
                                 >
                                     Voir tous les résultats pour &quot;{searchQuery}&quot;

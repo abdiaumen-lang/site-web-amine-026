@@ -15,6 +15,9 @@ export default function HomeHeader() {
     const { itemCount } = useCart();
     const pos = settings?.logo_position || 'left';
 
+    // Mobile search overlay state
+    const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
+
     useEffect(() => {
         async function fetchCategories() {
             try {
@@ -22,7 +25,7 @@ export default function HomeHeader() {
                     .from("categories")
                     .select("*, subcategories(*)")
                     .order("created_at", { ascending: true })
-                    .limit(6); // Keep it to 6 items to not break the layout
+                    .limit(6);
 
                 if (data && !error && data.length > 0) {
                     setCategories(data);
@@ -34,11 +37,19 @@ export default function HomeHeader() {
         fetchCategories();
     }, []);
 
+    // Close mobile search on ESC
+    useEffect(() => {
+        const handleKey = (e: KeyboardEvent) => {
+            if (e.key === "Escape") setIsMobileSearchOpen(false);
+        };
+        document.addEventListener("keydown", handleKey);
+        return () => document.removeEventListener("keydown", handleKey);
+    }, []);
+
     return (
         <>
             <div className="w-full bg-[#FF6600] text-white text-xs font-bold py-2 overflow-hidden whitespace-nowrap">
                 <div className="animate-marquee-smooth">
-                    {/* Text duplicated for seamless infinite loop */}
                     <span className="px-8">
                         {settings?.top_bar_text || "🚀 Livraison offerte à Alger à partir de 50 000 DA ! | 📞 Contactez-nous : +213 555 123 456 | 🏷️ Offres spéciales sur l'électroménager cette semaine !"}
                     </span>
@@ -70,6 +81,7 @@ export default function HomeHeader() {
                             </div>
                         )}
 
+                        {/* Desktop Search Bar */}
                         <div className={`flex-1 max-w-xl mx-4 hidden md:block ${pos === 'center' ? 'invisible xl:visible' : ''}`}>
                             <SearchBar />
                         </div>
@@ -77,7 +89,12 @@ export default function HomeHeader() {
                         <div className={`flex items-center gap-4 shrink-0 justify-end ${pos === 'left' ? '' : 'flex-1'}`}>
                             {pos === 'right' && <Logo />}
 
-                            <button className="md:hidden p-2 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full">
+                            {/* Mobile Search Button */}
+                            <button
+                                className="md:hidden p-2 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors"
+                                onClick={() => setIsMobileSearchOpen(true)}
+                                aria-label="Ouvrir la recherche"
+                            >
                                 <span className="material-symbols-outlined">search</span>
                             </button>
 
@@ -108,7 +125,6 @@ export default function HomeHeader() {
                                     )}
                                 </Link>
 
-                                {/* Dropdown for subcategories */}
                                 {cat.subcategories && cat.subcategories.length > 0 && (
                                     <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
                                         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-100 dark:border-slate-700 py-2 w-48 flex flex-col">
@@ -130,6 +146,32 @@ export default function HomeHeader() {
                     </nav>
                 </div>
             </header>
+
+            {/* Mobile Search Overlay */}
+            {isMobileSearchOpen && (
+                <div className="fixed inset-0 z-[100] md:hidden">
+                    {/* Backdrop */}
+                    <div
+                        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+                        onClick={() => setIsMobileSearchOpen(false)}
+                    />
+                    {/* Search Panel - slides from top */}
+                    <div className="relative bg-white dark:bg-slate-900 shadow-2xl px-4 pt-4 pb-6 animate-[slideDown_0.2s_ease-out]">
+                        <div className="flex items-center gap-3 mb-1">
+                            <div className="flex-1">
+                                <SearchBar autoFocus onSearch={() => setIsMobileSearchOpen(false)} />
+                            </div>
+                            <button
+                                onClick={() => setIsMobileSearchOpen(false)}
+                                className="p-2 rounded-full text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors shrink-0"
+                                aria-label="Fermer"
+                            >
+                                <span className="material-symbols-outlined">close</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </>
     );
 }
