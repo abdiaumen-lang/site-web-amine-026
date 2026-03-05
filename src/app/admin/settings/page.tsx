@@ -584,9 +584,19 @@ export default function AdminSettingsPage() {
                                                     />
                                                 </div>
                                                 <div className="flex-1">
-                                                    <div className="flex items-center gap-2 p-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900">
+                                                    <div className="flex items-center gap-2 p-2 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900">
                                                         <div className="w-5 h-5 rounded-md shrink-0" style={{ backgroundColor: themePrimaryColor }} />
-                                                        <span className="text-sm font-mono text-slate-600 dark:text-slate-400">{themePrimaryColor}</span>
+                                                        <input
+                                                            type="text"
+                                                            value={themePrimaryColor}
+                                                            onChange={(e) => {
+                                                                const v = e.target.value;
+                                                                setThemePrimaryColor(v);
+                                                            }}
+                                                            placeholder="#FF6B00"
+                                                            maxLength={7}
+                                                            className="flex-1 text-sm font-mono bg-transparent text-slate-600 dark:text-slate-400 focus:outline-none w-24"
+                                                        />
                                                     </div>
                                                     {/* Quick presets */}
                                                     <div className="flex gap-2 mt-2 flex-wrap">
@@ -641,9 +651,19 @@ export default function AdminSettingsPage() {
                                                 />
                                             </div>
                                             <div className="flex-1 space-y-3">
-                                                <div className="flex items-center gap-2 p-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900">
+                                                <div className="flex items-center gap-2 p-2 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900">
                                                     <div className="w-5 h-5 rounded-md shrink-0 border border-white/20" style={{ backgroundColor: menuBgColor }} />
-                                                    <span className="text-sm font-mono text-slate-600 dark:text-slate-400">{menuBgColor}</span>
+                                                    <input
+                                                        type="text"
+                                                        value={menuBgColor}
+                                                        onChange={(e) => {
+                                                            const v = e.target.value;
+                                                            setMenuBgColor(v);
+                                                        }}
+                                                        placeholder="#1a1525"
+                                                        maxLength={7}
+                                                        className="flex-1 text-sm font-mono bg-transparent text-slate-600 dark:text-slate-400 focus:outline-none w-24"
+                                                    />
                                                 </div>
                                                 {/* Quick presets */}
                                                 <div className="flex gap-2 flex-wrap">
