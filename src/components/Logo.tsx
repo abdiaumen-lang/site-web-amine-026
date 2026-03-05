@@ -27,7 +27,7 @@ export default function Logo({ className = "", iconClassName = "", textClassName
 
     if (settings && settings.logo_url) {
         return (
-            <div className={`${wrapperClass} overflow-hidden pointer-events-none`}>
+            <Link href="/" className={`${wrapperClass} overflow-hidden block`}>
                 {/* Custom Uploaded Logo */}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
@@ -40,16 +40,16 @@ export default function Logo({ className = "", iconClassName = "", textClassName
                     }}
                     className="transition-transform"
                 />
-            </div>
+            </Link>
         );
     }
 
     // Fallback: The Boulanger-styled native text logo we previously built - now just the 'e' icon
     return (
-        <div className={`${wrapperClass} pointer-events-none`}>
+        <Link href="/" className={`${wrapperClass} block`}>
             <div className={iconClassName || defaultIcon}>
                 <span className={defaultIconText}>e</span>
             </div>
-        </div>
+        </Link>
     );
 }
