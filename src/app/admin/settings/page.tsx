@@ -398,6 +398,21 @@ export default function AdminSettingsPage() {
                                     <div className="space-y-4">
                                         <div>
                                             <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">URL d'intégration Google Maps (iframe src)</label>
+
+                                            {/* Step-by-step guide */}
+                                            <div className="mb-3 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl text-xs text-blue-700 dark:text-blue-300 space-y-2">
+                                                <p className="font-bold text-sm flex items-center gap-2"><span className="material-symbols-outlined text-[16px]">info</span> Comment obtenir le bon lien :</p>
+                                                <ol className="list-decimal pl-5 space-y-1.5">
+                                                    <li>Ouvrez <strong>Google Maps</strong> sur votre ordinateur</li>
+                                                    <li>Recherchez votre adresse/magasin</li>
+                                                    <li>Cliquez sur <strong>Partager</strong> (Share)</li>
+                                                    <li>Choisissez l'onglet <strong>"Intégrer une carte"</strong></li>
+                                                    <li>Copiez <strong>uniquement le lien dans</strong> <code className="bg-blue-100 dark:bg-blue-900 px-1.5 py-0.5 rounded font-mono">src="..."</code></li>
+                                                </ol>
+                                                <p className="text-green-700 dark:text-green-400 font-medium">✅ Bon lien: <code className="bg-green-100 dark:bg-green-900 px-1 rounded">https://www.google.com/maps/embed?pb=...</code></p>
+                                                <p className="text-red-600 dark:text-red-400 font-medium">❌ Mauvais lien: <code className="bg-red-100 dark:bg-red-900 px-1 rounded">https://maps.app.goo.gl/...</code></p>
+                                            </div>
+
                                             <div className="relative">
                                                 <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">map</span>
                                                 <input
@@ -405,17 +420,31 @@ export default function AdminSettingsPage() {
                                                     value={mapsEmbedUrl}
                                                     onChange={(e) => setMapsEmbedUrl(e.target.value)}
                                                     placeholder="https://www.google.com/maps/embed?pb=..."
-                                                    className="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 pl-10 pr-4 py-2.5 text-sm focus:ring-primary focus:border-primary"
+                                                    className={`w-full rounded-xl border bg-white dark:bg-slate-900 pl-10 pr-4 py-2.5 text-sm focus:ring-primary focus:border-primary ${mapsEmbedUrl && !mapsEmbedUrl.includes('google.com/maps/embed')
+                                                            ? 'border-red-400 focus:ring-red-400'
+                                                            : 'border-slate-300 dark:border-slate-600'
+                                                        }`}
                                                 />
                                             </div>
-                                            <p className="text-xs text-slate-500 mt-2">
-                                                Pour obtenir ce lien, allez sur <strong>Google Maps</strong> → cliquez sur <strong>Partager</strong> → <strong>Intégrer une carte</strong> → copiez uniquement la valeur de l'attribut <code className="bg-slate-100 dark:bg-slate-900 px-1 rounded">src</code> de l'iframe.
-                                            </p>
+
+                                            {/* Validation warning */}
+                                            {mapsEmbedUrl && !mapsEmbedUrl.includes('google.com/maps/embed') && (
+                                                <div className="mt-2 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl flex items-start gap-2 text-red-600 dark:text-red-400 text-xs">
+                                                    <span className="material-symbols-outlined text-[16px] shrink-0 mt-0.5">error</span>
+                                                    <div>
+                                                        <p className="font-bold">Lien incorrect détecté !</p>
+                                                        <p>Ce lien est un lien de partage. Il ne fonctionnera pas dans l'iframe. Suivez les étapes ci-dessus pour obtenir le bon lien <strong>"Intégrer une carte"</strong>.</p>
+                                                    </div>
+                                                </div>
+                                            )}
                                         </div>
 
-                                        {mapsEmbedUrl && (
+                                        {mapsEmbedUrl && mapsEmbedUrl.includes('google.com/maps/embed') && (
                                             <div className="rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700">
-                                                <p className="text-xs font-semibold text-slate-500 px-4 py-2 bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700">Prévisualisation</p>
+                                                <p className="text-xs font-semibold text-slate-500 px-4 py-2 bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 flex items-center gap-2">
+                                                    <span className="material-symbols-outlined text-green-500 text-[14px]">check_circle</span>
+                                                    Prévisualisation
+                                                </p>
                                                 <iframe
                                                     src={mapsEmbedUrl}
                                                     width="100%"
