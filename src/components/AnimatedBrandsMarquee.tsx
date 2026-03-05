@@ -83,10 +83,10 @@ export default function AnimatedBrandsMarquee() {
                                 src={brand.image_url}
                                 alt={brand.name || "Brand logo"}
                                 loading="lazy"
-                                className="object-contain mix-blend-multiply dark:mix-blend-normal max-w-none"
+                                className="object-contain mix-blend-multiply dark:mix-blend-normal"
                                 style={{
-                                    width: `${brand.width}px`,
-                                    height: `${brand.height}px`
+                                    width: `${Math.min(brand.width, 150)}px`,
+                                    height: `${Math.min(brand.height, 80)}px`
                                 }}
                             />
                             {brand.name && (
