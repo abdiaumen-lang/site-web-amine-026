@@ -21,6 +21,7 @@ export default function AdminSettingsPage() {
     const [whatsappPosition, setWhatsappPosition] = useState<string>("bottom-right");
     const [whatsappOffsetX, setWhatsappOffsetX] = useState<number>(24);
     const [whatsappOffsetY, setWhatsappOffsetY] = useState<number>(24);
+    const [mapsEmbedUrl, setMapsEmbedUrl] = useState<string>("");
 
     const [uploading, setUploading] = useState(false);
     const [successMessage, setSuccessMessage] = useState("");
@@ -38,6 +39,7 @@ export default function AdminSettingsPage() {
             setWhatsappPosition(settings.whatsapp_position || "bottom-right");
             setWhatsappOffsetX(settings.whatsapp_offset_x || 24);
             setWhatsappOffsetY(settings.whatsapp_offset_y || 24);
+            setMapsEmbedUrl(settings.maps_embed_url || "");
         }
     }, [settings]);
 
@@ -92,6 +94,7 @@ export default function AdminSettingsPage() {
                 whatsapp_position: whatsappPosition,
                 whatsapp_offset_x: whatsappOffsetX,
                 whatsapp_offset_y: whatsappOffsetY,
+                maps_embed_url: mapsEmbedUrl || null,
                 updated_at: new Date().toISOString(),
             };
 
@@ -372,6 +375,49 @@ export default function AdminSettingsPage() {
                                                 </p>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+
+                                {/* Google Maps Section */}
+                                <div className="pt-8 border-t border-slate-200 dark:border-slate-700">
+                                    <div className="mb-6">
+                                        <h2 className="text-lg font-bold text-slate-900 dark:text-white">Localisation (Google Maps)</h2>
+                                        <p className="text-sm text-slate-500 mt-1">Ajoutez l'URL d'intégration Google Maps pour afficher votre emplacement sur la page d'accueil.</p>
+                                    </div>
+
+                                    <div className="space-y-4">
+                                        <div>
+                                            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">URL d'intégration Google Maps (iframe src)</label>
+                                            <div className="relative">
+                                                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">map</span>
+                                                <input
+                                                    type="url"
+                                                    value={mapsEmbedUrl}
+                                                    onChange={(e) => setMapsEmbedUrl(e.target.value)}
+                                                    placeholder="https://www.google.com/maps/embed?pb=..."
+                                                    className="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 pl-10 pr-4 py-2.5 text-sm focus:ring-primary focus:border-primary"
+                                                />
+                                            </div>
+                                            <p className="text-xs text-slate-500 mt-2">
+                                                Pour obtenir ce lien, allez sur <strong>Google Maps</strong> → cliquez sur <strong>Partager</strong> → <strong>Intégrer une carte</strong> → copiez uniquement la valeur de l'attribut <code className="bg-slate-100 dark:bg-slate-900 px-1 rounded">src</code> de l'iframe.
+                                            </p>
+                                        </div>
+
+                                        {mapsEmbedUrl && (
+                                            <div className="rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700">
+                                                <p className="text-xs font-semibold text-slate-500 px-4 py-2 bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700">Prévisualisation</p>
+                                                <iframe
+                                                    src={mapsEmbedUrl}
+                                                    width="100%"
+                                                    height="250"
+                                                    style={{ border: 0 }}
+                                                    allowFullScreen
+                                                    loading="lazy"
+                                                    referrerPolicy="no-referrer-when-downgrade"
+                                                    className="block"
+                                                />
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
 

@@ -14,6 +14,7 @@ export interface WebsiteSettings {
     whatsapp_position: string;
     whatsapp_offset_x: number;
     whatsapp_offset_y: number;
+    maps_embed_url?: string | null;
     updated_at: string;
 }
 
