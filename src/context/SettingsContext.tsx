@@ -27,6 +27,7 @@ export interface WebsiteSettings {
     social_twitter?: string | null;
     theme_primary_color?: string | null;
     theme_font_family?: string | null;
+    menu_bg_color?: string | null;
     updated_at: string;
 }
 

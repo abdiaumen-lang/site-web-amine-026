@@ -73,7 +73,8 @@ export default function MobileMenu() {
 
             {/* Drawer */}
             <div
-                className={`fixed top-0 left-0 bottom-0 w-[85%] max-w-[360px] bg-[#1a1525] dark:bg-slate-900 z-[100] transform transition-transform duration-300 ease-in-out flex flex-col shadow-2xl md:hidden ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
+                className={`fixed top-0 left-0 bottom-0 w-[85%] max-w-[360px] z-[100] transform transition-transform duration-300 ease-in-out flex flex-col shadow-2xl md:hidden ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
+                style={{ backgroundColor: settings?.menu_bg_color || '#1a1525' }}
             >
                 {/* Header with Title and Close Button */}
                 <div className="flex items-center justify-between p-5 border-b border-white/10">

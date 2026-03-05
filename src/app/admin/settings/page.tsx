@@ -37,6 +37,7 @@ export default function AdminSettingsPage() {
     const [socialTwitter, setSocialTwitter] = useState<string>("");
     const [themePrimaryColor, setThemePrimaryColor] = useState<string>("#FF6B00");
     const [themeFontFamily, setThemeFontFamily] = useState<string>("Inter");
+    const [menuBgColor, setMenuBgColor] = useState<string>("#1a1525");
 
     const [uploading, setUploading] = useState(false);
     const [successMessage, setSuccessMessage] = useState("");
@@ -67,6 +68,7 @@ export default function AdminSettingsPage() {
             setSocialTwitter(settings.social_twitter || "");
             setThemePrimaryColor(settings.theme_primary_color || "#FF6B00");
             setThemeFontFamily(settings.theme_font_family || "Inter");
+            setMenuBgColor(settings.menu_bg_color || "#1a1525");
         }
     }, [settings]);
 
@@ -134,6 +136,7 @@ export default function AdminSettingsPage() {
                 social_twitter: socialTwitter || null,
                 theme_primary_color: themePrimaryColor,
                 theme_font_family: themeFontFamily,
+                menu_bg_color: menuBgColor,
                 updated_at: new Date().toISOString(),
             };
 
@@ -621,6 +624,62 @@ export default function AdminSettingsPage() {
                                             </div>
                                             <p className="text-xs text-slate-500 mt-2">S&apos;applique à tout le texte du site (titres, paragraphes, boutons).</p>
                                         </div>
+                                    </div>
+
+                                    {/* Menu Background Color */}
+                                    <div className="mt-6 pt-5 border-t border-slate-200 dark:border-slate-700">
+                                        <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">
+                                            Couleur de fond du menu mobile
+                                        </label>
+                                        <div className="flex items-start gap-4">
+                                            <div className="flex flex-col items-center gap-2">
+                                                <input
+                                                    type="color"
+                                                    value={menuBgColor}
+                                                    onChange={(e) => setMenuBgColor(e.target.value)}
+                                                    className="w-16 h-12 rounded-xl cursor-pointer border-2 border-slate-200 dark:border-slate-700 bg-transparent p-0.5"
+                                                />
+                                            </div>
+                                            <div className="flex-1 space-y-3">
+                                                <div className="flex items-center gap-2 p-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900">
+                                                    <div className="w-5 h-5 rounded-md shrink-0 border border-white/20" style={{ backgroundColor: menuBgColor }} />
+                                                    <span className="text-sm font-mono text-slate-600 dark:text-slate-400">{menuBgColor}</span>
+                                                </div>
+                                                {/* Quick presets */}
+                                                <div className="flex gap-2 flex-wrap">
+                                                    {[
+                                                        { color: '#1a1525', label: 'Défaut (sombre)' },
+                                                        { color: '#0f172a', label: 'Bleu nuit' },
+                                                        { color: '#1e1b4b', label: 'Violet sombre' },
+                                                        { color: '#0a0a0a', label: 'Noir' },
+                                                        { color: '#1c2632', label: 'Ardoise' },
+                                                        { color: '#ffffff', label: 'Blanc' },
+                                                        { color: '#f8f7f6', label: 'Crème' },
+                                                        { color: '#111827', label: 'Gris sombre' },
+                                                    ].map(({ color, label }) => (
+                                                        <button key={color} type="button" onClick={() => setMenuBgColor(color)} title={label}
+                                                            className={`w-8 h-8 rounded-full border-2 transition-all hover:scale-110 ${menuBgColor === color ? 'border-primary scale-110' : 'border-slate-300 dark:border-slate-700'}`}
+                                                            style={{ backgroundColor: color }}
+                                                        />
+                                                    ))}
+                                                </div>
+                                            </div>
+                                            {/* Mini preview */}
+                                            <div className="shrink-0 w-28 rounded-xl overflow-hidden border border-slate-300 dark:border-slate-700 shadow-md" style={{ backgroundColor: menuBgColor }}>
+                                                <div className="p-2 border-b border-white/10">
+                                                    <span className="text-white text-[10px] font-bold">Nos univers</span>
+                                                </div>
+                                                <div className="p-2 space-y-1">
+                                                    {['Cuisine', 'TV & Son', 'Beauté'].map(n => (
+                                                        <div key={n} className="flex items-center gap-1.5">
+                                                            <div className="w-5 h-5 rounded bg-white/20 shrink-0" />
+                                                            <span className="text-white/80 text-[9px]">{n}</span>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p className="text-xs text-slate-500 mt-2">Personnalise la couleur de fond du tiroir de navigation sur mobile.</p>
                                     </div>
                                 </div>
 
