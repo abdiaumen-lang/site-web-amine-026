@@ -35,12 +35,14 @@ export default function HomeFooter() {
                             <div className="flex-1 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 shadow-sm min-h-[300px]">
                                 <iframe
                                     src={mapsEmbedUrl}
-                                    style={{ border: 0 }}
+                                    width="100%"
+                                    height="380"
+                                    style={{ border: 0, minHeight: '380px' }}
                                     allowFullScreen
                                     loading="lazy"
                                     referrerPolicy="no-referrer-when-downgrade"
                                     title="Notre localisation sur Google Maps"
-                                    className="w-full h-[380px] block"
+                                    className="w-full block"
                                 />
                             </div>
 
