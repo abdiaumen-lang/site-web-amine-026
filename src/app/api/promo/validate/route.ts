@@ -35,9 +35,15 @@ export async function POST(request: Request) {
             return NextResponse.json({ valid: false, error: 'Code promo invalide ou inexistant' });
         }
 
-        // Expiry check
-        if (data.expires_at && new Date(data.expires_at) < new Date()) {
-            return NextResponse.json({ valid: false, error: 'Ce code promo a expiré' });
+        // Expiry check (allow the whole day of expiration, up to 23:59:59)
+        if (data.expires_at) {
+            const expiryDate = new Date(data.expires_at);
+            // Set expired date to the end of that day
+            expiryDate.setHours(23, 59, 59, 999);
+
+            if (expiryDate < new Date()) {
+                return NextResponse.json({ valid: false, error: 'Ce code promo a expiré' });
+            }
         }
 
         // Max uses check
