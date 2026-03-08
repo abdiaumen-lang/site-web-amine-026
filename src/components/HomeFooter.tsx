@@ -128,7 +128,8 @@ export default function HomeFooter() {
                             </li>
                             <li className="flex items-center gap-2">
                                 <span className="material-symbols-outlined text-[18px]">mail</span>
-                                aminebenslimane13
+                                electromartdz@gmail.com
+
                             </li>
                         </ul>
                     </div>
