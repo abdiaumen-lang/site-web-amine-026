@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import AdminSidebar from "@/components/AdminSidebar";
 import AdminMediaUpload, { MediaItem } from "@/components/AdminMediaUpload";
+import AdminImageUpload from "@/components/AdminImageUpload";
 import dynamic from 'next/dynamic';
 import 'react-quill-new/dist/quill.snow.css';
 
@@ -374,21 +375,14 @@ export default function AddProductPage() {
                                             </p>
                                         </div>
 
-                                        <div className="mt-6 flex flex-col gap-2">
-                                            <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Landing Image (URL)</label>
-                                            <input
+                                        <div className="mt-6">
+                                            <AdminImageUpload
+                                                label="Landing Image"
                                                 value={landingImage}
-                                                onChange={(e) => setLandingImage(e.target.value)}
-                                                className="rounded-lg border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-primary focus:border-primary w-full shadow-sm py-2.5 px-3"
-                                                placeholder="https://... (URL de l'image de la landing page)"
-                                                type="url"
+                                                onChange={setLandingImage}
+                                                folder="landing"
                                             />
-                                            {landingImage && (
-                                                <div className="mt-2 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 max-h-64">
-                                                    <img src={landingImage} alt="Landing page image preview" className="w-full object-cover" />
-                                                </div>
-                                            )}
-                                            <p className="text-[10px] text-slate-400">Cette image sera affichée directement sous la description du produit.</p>
+                                            <p className="text-[10px] text-slate-400 mt-2">Cette image sera affichée directement sous la description du produit.</p>
                                         </div>
 
                                         <div className="mt-6 flex flex-col gap-2 pt-4 border-t border-slate-100 dark:border-slate-700">
@@ -607,41 +601,41 @@ export default function AddProductPage() {
 
                                             <div className="flex flex-col gap-2 border-t border-slate-100 dark:border-slate-700 pt-4">
                                                 <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Images du produit</label>
-                                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                                                    <div className="flex flex-col gap-2">
-                                                        <label className="text-xs font-medium text-slate-500">Image principale (URL)</label>
-                                                        <input value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} className="rounded-lg border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-primary focus:border-primary w-full shadow-sm py-2" placeholder="https://..." type="url" />
-                                                        {imageUrl && (
-                                                            <div className="aspect-square rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden bg-slate-50 dark:bg-slate-900">
-                                                                <img src={imageUrl} alt="Main" className="w-full h-full object-contain" />
-                                                            </div>
-                                                        )}
-                                                    </div>
+                                                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mt-2">
+                                                    {/* Main Image */}
+                                                    <AdminImageUpload
+                                                        label="Image principale"
+                                                        value={imageUrl}
+                                                        onChange={setImageUrl}
+                                                    />
 
+                                                    {/* Gallery Images */}
                                                     {images.map((img, idx) => (
-                                                        <div key={idx} className="flex flex-col gap-2">
-                                                            <label className="text-xs font-medium text-slate-500">Image {idx + 2} (URL)</label>
-                                                            <div className="flex gap-2">
-                                                                <input value={img} onChange={(e) => {
-                                                                    const newImages = [...images];
-                                                                    newImages[idx] = e.target.value;
+                                                        <AdminImageUpload
+                                                            key={idx}
+                                                            label={`Image ${idx + 2}`}
+                                                            value={img}
+                                                            onChange={(newUrl) => {
+                                                                const newImages = [...images];
+                                                                if (newUrl === "") {
+                                                                    // If deleted, remove from array
+                                                                    setImages(images.filter((_, i) => i !== idx));
+                                                                } else {
+                                                                    newImages[idx] = newUrl;
                                                                     setImages(newImages);
-                                                                }} className="flex-1 rounded-lg border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-primary focus:border-primary shadow-sm py-2" placeholder="https://..." type="url" />
-                                                                <button type="button" onClick={() => setImages(images.filter((_, i) => i !== idx))} className="text-red-500 hover:text-red-700">
-                                                                    <span className="material-symbols-outlined">delete</span>
-                                                                </button>
-                                                            </div>
-                                                            {img && (
-                                                                <div className="aspect-square rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden bg-slate-50 dark:bg-slate-900">
-                                                                    <img src={img} alt={`Extra ${idx + 2}`} className="w-full h-full object-contain" />
-                                                                </div>
-                                                            )}
-                                                        </div>
+                                                                }
+                                                            }}
+                                                        />
                                                     ))}
 
-                                                    <button type="button" onClick={() => setImages([...images, ""])} className="aspect-square rounded-lg border-2 border-dashed border-slate-300 dark:border-slate-600 flex flex-col items-center justify-center text-slate-400 hover:text-primary hover:border-primary transition-all">
-                                                        <span className="material-symbols-outlined text-3xl">add_photo_alternate</span>
-                                                        <span className="text-xs mt-2">Ajouter une image</span>
+                                                    {/* Add Button */}
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => setImages([...images, ""])}
+                                                        className="aspect-square rounded-lg border-2 border-dashed border-slate-300 dark:border-slate-600 flex flex-col items-center justify-center text-slate-400 hover:text-primary hover:border-primary transition-all bg-slate-50 dark:bg-slate-900"
+                                                    >
+                                                        <span className="material-symbols-outlined text-3xl">add</span>
+                                                        <span className="text-[10px] mt-2 font-medium uppercase tracking-tight">Nouvelle image</span>
                                                     </button>
                                                 </div>
                                             </div>
