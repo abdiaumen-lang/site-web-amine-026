@@ -128,7 +128,7 @@ export default function HomeFooter() {
                             </li>
                             <li className="flex items-center gap-2">
                                 <span className="material-symbols-outlined text-[18px]">mail</span>
-                                electromartdz@gmail.com
+                                <a href="mailto:electromartdz@gmail.com" className="hover:underline hover:text-primary transition-colors">electromartdz@gmail.com</a>
 
                             </li>
                         </ul>
