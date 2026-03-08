@@ -126,6 +126,39 @@ export default function AdminSalesPage() {
         }
     };
 
+    const handleDeleteOrder = async (orderId: string) => {
+        if (!window.confirm("Êtes-vous sûr de vouloir supprimer cette commande ? Cette action supprimera également tous les articles associés et est irréversible.")) {
+            return;
+        }
+
+        try {
+            setIsLoading(true);
+
+            // Delete order items first to handle potential FK constraints
+            const { error: itemsError } = await supabase
+                .from('order_items')
+                .delete()
+                .eq('order_id', orderId);
+
+            if (itemsError) throw itemsError;
+
+            // Delete the order
+            const { error: orderError } = await supabase
+                .from('orders')
+                .delete()
+                .eq('id', orderId);
+
+            if (orderError) throw orderError;
+
+            // Update local state
+            setOrders(orders.filter(o => o.id !== orderId));
+        } catch (err: any) {
+            alert("Erreur lors de la suppression : " + err.message);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     const stats = {
         totalRevenue: orders.reduce((acc, o) => acc + o.total_amount, 0),
         totalOrders: orders.length,
@@ -303,16 +336,26 @@ export default function AdminSalesPage() {
                                                             </span>
                                                         </td>
                                                         <td className="px-6 py-4 text-right whitespace-nowrap">
-                                                            <button
-                                                                onClick={() => {
-                                                                    setSelectedOrder(order);
-                                                                    setTrackingNotesInput(order.tracking_notes || "");
-                                                                    setIsModalOpen(true);
-                                                                }}
-                                                                className="px-4 py-2 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-xl text-xs font-bold transition-all active:scale-95"
-                                                            >
-                                                                Détails
-                                                            </button>
+                                                            <div className="flex items-center justify-end gap-2">
+                                                                <button
+                                                                    onClick={() => {
+                                                                        setSelectedOrder(order);
+                                                                        setTrackingNotesInput(order.tracking_notes || "");
+                                                                        setIsModalOpen(true);
+                                                                    }}
+                                                                    className="px-4 py-2 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-xl text-xs font-bold transition-all active:scale-95 flex items-center gap-1.5"
+                                                                >
+                                                                    <span className="material-symbols-outlined text-[18px]">visibility</span>
+                                                                    Détails
+                                                                </button>
+                                                                <button
+                                                                    onClick={() => handleDeleteOrder(order.id)}
+                                                                    className="p-2 bg-red-50 hover:bg-red-100 text-red-600 rounded-xl transition-all active:scale-95 group"
+                                                                    title="Supprimer la commande"
+                                                                >
+                                                                    <span className="material-symbols-outlined text-[20px]">delete</span>
+                                                                </button>
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 ))
