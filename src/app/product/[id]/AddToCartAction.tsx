@@ -83,42 +83,42 @@ export default function AddToCartAction({ productId, stock, price }: AddToCartAc
     }
 
     return (
-        <div className="flex flex-col gap-6 w-full">
-            <div className="flex items-center justify-between border border-slate-200 dark:border-slate-700 rounded-2xl p-4">
-                <span className="font-semibold text-slate-700 dark:text-slate-200">Quantité</span>
-                <div className="flex items-center gap-4">
+        <div className="flex flex-col gap-5 w-full">
+            <div className="flex items-center justify-between border-2 border-slate-100 dark:border-slate-800 rounded-2xl p-3 px-5 sm:w-max bg-white dark:bg-slate-900">
+                <span className="font-bold text-sm text-slate-500 dark:text-slate-400 uppercase tracking-widest mr-6">Quantité</span>
+                <div className="flex items-center gap-5">
                     <button
                         type="button"
                         onClick={() => setQuantity(q => Math.max(1, q - 1))}
-                        className="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center hover:bg-slate-200 dark:hover:bg-slate-700 transition active:scale-90"
+                        className="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-all active:scale-90 hover:shadow-sm"
                     >
-                        <span className="material-symbols-outlined text-[24px]">remove</span>
+                        <span className="material-symbols-outlined text-[20px]">remove</span>
                     </button>
-                    <span className="font-bold text-xl w-6 text-center">{quantity}</span>
+                    <span className="font-black text-xl w-8 text-center text-slate-900 dark:text-white">{quantity}</span>
                     <button
                         type="button"
                         onClick={() => setQuantity(q => Math.min(stock, q + 1))}
-                        className="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center hover:bg-slate-200 dark:hover:bg-slate-700 transition active:scale-90"
+                        className="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-all active:scale-90 hover:shadow-sm"
                     >
-                        <span className="material-symbols-outlined text-[24px]">add</span>
+                        <span className="material-symbols-outlined text-[20px]">add</span>
                     </button>
                 </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row gap-4 mt-2">
                 <button
                     onClick={handleAddToCart}
                     disabled={isAdding || isBuyingNow}
-                    className={`flex-1 py-5 px-6 font-bold rounded-2xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary/10 ${showSuccess ? 'bg-green-500 text-white' : 'bg-primary text-white hover:bg-primary-dark active:scale-[0.98]'}`}
+                    className={`flex-1 py-4 px-6 font-black rounded-2xl transition-all duration-300 flex items-center justify-center gap-3 border-2 border-transparent ${showSuccess ? 'bg-green-500 text-white shadow-lg shadow-green-500/20' : 'bg-primary/10 text-primary hover:bg-primary hover:text-white active:scale-[0.98]'}`}
                 >
                     {isAdding ? (
-                        <span className="material-symbols-outlined animate-spin text-[22px]">refresh</span>
+                        <span className="material-symbols-outlined animate-spin text-[24px]">refresh</span>
                     ) : showSuccess ? (
-                        <span className="material-symbols-outlined text-[22px]">check_circle</span>
+                        <span className="material-symbols-outlined text-[24px]">check_circle</span>
                     ) : (
-                        <span className="material-symbols-outlined text-[22px]">shopping_cart</span>
+                        <span className="material-symbols-outlined text-[24px]">shopping_cart</span>
                     )}
-                    <span className="text-lg">{showSuccess ? 'Ajouté !' : 'Ajouter au panier'}</span>
+                    <span className="text-lg tracking-wide">{showSuccess ? 'Ajouté avec succès' : 'Ajouter au panier'}</span>
                 </button>
                 <button
                     onClick={async () => {
@@ -131,14 +131,14 @@ export default function AddToCartAction({ productId, stock, price }: AddToCartAc
                         }
                     }}
                     disabled={isAdding || isBuyingNow}
-                    className="flex-1 py-5 px-6 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold rounded-2xl hover:bg-slate-800 dark:hover:bg-slate-100 transition-all active:scale-[0.98] shadow-lg shadow-slate-900/10 flex items-center justify-center gap-2 disabled:opacity-70 disabled:active:scale-100"
+                    className="flex-1 py-4 px-6 bg-primary dark:bg-white text-white dark:text-slate-900 font-black rounded-2xl hover:bg-primary-dark dark:hover:bg-slate-100 transition-all duration-300 active:scale-[0.98] shadow-xl shadow-primary/20 dark:shadow-white/10 flex items-center justify-center gap-3 disabled:opacity-70 disabled:active:scale-100 hover:-translate-y-1"
                 >
                     {isBuyingNow ? (
-                        <span className="material-symbols-outlined animate-spin text-[22px]">refresh</span>
+                        <span className="material-symbols-outlined animate-spin text-[24px]">refresh</span>
                     ) : (
-                        <span className="material-symbols-outlined text-[22px]">flash_on</span>
+                        <span className="material-symbols-outlined text-[24px]">flash_on</span>
                     )}
-                    <span className="text-lg">{isBuyingNow ? 'Redirection...' : 'Acheter maintenant'}</span>
+                    <span className="text-lg tracking-wide">{isBuyingNow ? 'Redirection...' : 'Acheter maintenant'}</span>
                 </button>
             </div>
         </div>

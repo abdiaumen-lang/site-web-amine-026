@@ -56,19 +56,25 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
             <ProductHeader />
 
             <main className="flex-1 max-w-[1440px] mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 md:py-12">
-                <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
-                    <div className="flex items-center gap-2 text-sm text-slate-500">
-                        <Link href="/" className="hover:text-primary transition-colors">Accueil</Link>
-                        <span className="material-symbols-outlined text-[14px]">chevron_right</span>
+                <div className="mb-6 md:mb-8 flex flex-wrap items-center justify-between gap-4 bg-white/50 dark:bg-slate-900/50 backdrop-blur-md p-3 px-5 rounded-2xl border border-slate-200/50 dark:border-slate-800/50 shadow-sm">
+                    <div className="flex items-center gap-2 text-xs md:text-sm font-semibold text-slate-500">
+                        <Link href="/" className="hover:text-primary transition-colors flex items-center gap-1">
+                            <span className="material-symbols-outlined text-[16px]">home</span>
+                            Accueil
+                        </Link>
+                        <span className="material-symbols-outlined text-[14px] text-slate-300 dark:text-slate-600">chevron_right</span>
                         <Link href="/product" className="hover:text-primary transition-colors">Produits</Link>
-                        <span className="material-symbols-outlined text-[14px]">chevron_right</span>
+
                         {product.categories?.name && (
                             <>
-                                <Link href={`/product?category=${product.category_id}`} className="hover:text-primary transition-colors">{product.categories.name}</Link>
-                                <span className="material-symbols-outlined text-[14px]">chevron_right</span>
+                                <span className="material-symbols-outlined text-[14px] text-slate-300 dark:text-slate-600">chevron_right</span>
+                                <Link href={`/product?category=${product.category_id}`} className="hover:text-primary transition-colors px-2 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg">
+                                    {product.categories.name}
+                                </Link>
                             </>
                         )}
-                        <span className="text-slate-900 dark:text-slate-200 font-medium line-clamp-1">{product.name}</span>
+                        <span className="material-symbols-outlined text-[14px] text-slate-300 dark:text-slate-600">chevron_right</span>
+                        <span className="text-slate-900 dark:text-slate-200 truncate max-w-[120px] sm:max-w-[200px] md:max-w-[300px]">{product.name}</span>
                     </div>
 
                     <EditProductButton productId={product.id} />
@@ -95,19 +101,38 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                             </h1>
 
                             {/* Interactive Ratings */}
-                            <div className="mb-6">
+                            <div className="mb-6 flex items-center gap-4">
                                 <InteractiveStarRating productId={product.id} />
-                            </div>
-
-                            <div className="flex flex-col gap-1 mb-8">
-                                {product.original_price && (
-                                    <span className="text-slate-400 text-lg line-through font-medium">
-                                        {product.original_price.toLocaleString()} DA
+                                {product.stock > 0 ? (
+                                    <span className="px-3 py-1 bg-green-500/10 text-green-600 dark:text-green-400 text-xs font-bold uppercase tracking-widest rounded-full flex items-center gap-1 border border-green-500/20">
+                                        <span className="material-symbols-outlined text-[14px]">check_circle</span>
+                                        En stock
+                                    </span>
+                                ) : (
+                                    <span className="px-3 py-1 bg-red-500/10 text-red-600 dark:text-red-400 text-xs font-bold uppercase tracking-widest rounded-full flex items-center gap-1 border border-red-500/20">
+                                        <span className="material-symbols-outlined text-[14px]">cancel</span>
+                                        Rupture
                                     </span>
                                 )}
-                                <span className="text-primary text-4xl lg:text-5xl font-black">
-                                    {product.price?.toLocaleString()} DA
-                                </span>
+                            </div>
+
+                            <div className="flex flex-col gap-2 mb-8 bg-slate-50 dark:bg-slate-800/50 p-6 rounded-3xl border border-slate-100 dark:border-slate-700/50">
+                                {product.original_price && (
+                                    <div className="flex items-center gap-3">
+                                        <span className="text-slate-400 text-lg md:text-xl line-through font-bold decoration-red-500/50 decoration-2">
+                                            {product.original_price.toLocaleString()} DA
+                                        </span>
+                                        <span className="bg-red-500 text-white text-[10px] font-black px-2 py-1 rounded-lg uppercase tracking-wider">
+                                            Économisez {(product.original_price - product.price).toLocaleString()} DA
+                                        </span>
+                                    </div>
+                                )}
+                                <div className="flex items-baseline gap-2">
+                                    <span className="text-primary text-5xl lg:text-6xl font-black tracking-tight">
+                                        {product.price?.toLocaleString()}
+                                    </span>
+                                    <span className="text-primary/70 text-2xl font-bold">DA</span>
+                                </div>
                             </div>
                         </div>
 
@@ -121,16 +146,38 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                                 price={product.price}
                             />
                         </div>
+
+                        {/* Trust Badges */}
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 pt-6 border-t border-slate-100 dark:border-slate-800">
+                            <div className="flex flex-col items-center justify-center text-center gap-2 p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/30 hover:bg-slate-100 transition-colors">
+                                <span className="material-symbols-outlined text-3xl text-primary">local_shipping</span>
+                                <span className="text-xs font-bold text-slate-700 dark:text-slate-300 leading-tight">Livraison<br />Rapide</span>
+                            </div>
+                            <div className="flex flex-col items-center justify-center text-center gap-2 p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/30 hover:bg-slate-100 transition-colors">
+                                <span className="material-symbols-outlined text-3xl text-primary">verified</span>
+                                <span className="text-xs font-bold text-slate-700 dark:text-slate-300 leading-tight">Produit<br />Original</span>
+                            </div>
+                            <div className="flex flex-col items-center justify-center text-center gap-2 p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/30 hover:bg-slate-100 transition-colors">
+                                <span className="material-symbols-outlined text-3xl text-primary">support_agent</span>
+                                <span className="text-xs font-bold text-slate-700 dark:text-slate-300 leading-tight">Support<br />24/7</span>
+                            </div>
+                            <div className="flex flex-col items-center justify-center text-center gap-2 p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/30 hover:bg-slate-100 transition-colors">
+                                <span className="material-symbols-outlined text-3xl text-primary">lock</span>
+                                <span className="text-xs font-bold text-slate-700 dark:text-slate-300 leading-tight">Paiement<br />Sécurisé</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 {/* --- FULL WIDTH DESCRIPTION & LANDING PAGE SECTION --- */}
-                <div className="mt-12 md:mt-16 bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800 overflow-hidden">
-                    <div className="p-6 md:p-12 lg:p-16 max-w-5xl mx-auto flex flex-col items-center">
+                <div className="mt-12 md:mt-16 bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800 overflow-hidden relative">
+                    <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-slate-50 to-white dark:from-slate-800/50 dark:to-slate-900 pointer-events-none"></div>
+                    <div className="p-8 md:p-12 lg:p-16 max-w-5xl mx-auto flex flex-col items-center relative z-10">
 
-                        <div className="w-full mb-12">
-                            <h3 className="text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-white mb-6 text-center">À propos de ce produit</h3>
-                            <div className="prose prose-lg dark:prose-invert max-w-none text-slate-600 dark:text-slate-400 leading-relaxed text-center sm:text-left prose-img:rounded-xl prose-img:shadow-md">
+                        <div className="w-full mb-16 relative">
+                            <div className="absolute -left-4 top-0 w-1 h-full bg-primary rounded-full hidden md:block"></div>
+                            <h3 className="text-2xl md:text-4xl font-black text-slate-900 dark:text-white mb-8 md:pl-6">Présentation du produit</h3>
+                            <div className="prose prose-lg dark:prose-invert max-w-none text-slate-600 dark:text-slate-400 leading-relaxed md:pl-6 prose-img:rounded-2xl prose-img:shadow-xl hover:prose-a:text-primary">
                                 {product.description ? (
                                     <div
                                         dangerouslySetInnerHTML={{
@@ -138,7 +185,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                                         }}
                                     />
                                 ) : (
-                                    <p>Aucune description détaillée n&apos;est disponible pour ce produit pour le moment.</p>
+                                    <p className="italic text-slate-400">Aucune description détaillée n&apos;est disponible pour ce produit pour le moment.</p>
                                 )}
                             </div>
                         </div>
