@@ -151,6 +151,27 @@ export default function MobileMenu() {
                         </div>
                     ))}
 
+                    {/* Order Tracking Link */}
+                    <div className="flex flex-col mb-2">
+                        <Link
+                            href="/track"
+                            onClick={() => setIsOpen(false)}
+                            className="flex items-center gap-4 group p-2 rounded-xl hover:bg-white/5 transition-colors w-full text-left"
+                        >
+                            <div className="size-14 bg-primary/10 border border-primary/20 shrink-0 rounded-lg flex items-center justify-center shadow-sm">
+                                <span className="material-symbols-outlined text-primary text-3xl group-hover:scale-110 transition-transform">
+                                    local_shipping
+                                </span>
+                            </div>
+                            <span className="text-white font-bold flex-1 text-sm group-hover:text-primary transition-colors">
+                                Suivre ma commande
+                            </span>
+                            <span className="material-symbols-outlined text-white/40 group-hover:text-primary transition-colors">
+                                chevron_right
+                            </span>
+                        </Link>
+                    </div>
+
                     {/* Contact & Social info panel */}
                     {hasContact && (
                         <div className="mt-3 pt-4 border-t border-white/10">
