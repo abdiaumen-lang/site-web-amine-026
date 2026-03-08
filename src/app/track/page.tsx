@@ -38,17 +38,23 @@ export default function TrackOrderPage() {
             setOrder(null);
 
             // Allow looking up by full ID or the short EM-XXXXXX format
-            let queryId = orderId.trim();
-            if (queryId.toUpperCase().startsWith('EM-')) {
+            let queryId = orderId.trim().toUpperCase();
+            if (queryId.startsWith('EM-')) {
                 // If they typed the prefix, we just search using like
                 queryId = queryId.substring(3);
             }
 
+            // Just take the first 6 chars to match the generated short_id in the DB
+            if (queryId.length > 6 && !queryId.includes('-')) {
+                queryId = queryId.substring(0, 6);
+            } else if (queryId.length > 6 && queryId.includes('-')) {
+                queryId = queryId.split('-')[0].substring(0, 6);
+            }
+
             const { data, error } = await supabase
                 .from('orders')
-                .select('id, created_at, status, tracking_notes, total_amount, shipping_cost, wilaya, commune, order_items(quantity, price_at_time, products(name, image))')
-                .ilike('id', `${queryId}%`)
-            // Validate with phone if provided, otherwise just ID is okay. For extra security, we could require both. Let's require both to be safe.
+                .select('id, created_at, status, tracking_notes, total_amount, shipping_cost, wilaya, commune, order_items(quantity, price_at_time, products(name, image)), customer_phone')
+                .eq('short_id', queryId.substring(0, 6));
 
             let matchingOrder = null;
 
@@ -61,15 +67,14 @@ export default function TrackOrderPage() {
 
             // To make it secure, let's require phone number match
             if (phone.trim()) {
-                const { data: phoneCheck, error: phoneErr } = await supabase
-                    .from('orders')
-                    .select('customer_phone')
-                    .eq('id', matchingOrder.id)
-                    .single();
-
-                if (phoneErr || !phoneCheck) throw new Error("Erreur de vérification");
-                if (phoneCheck.customer_phone.replace(/\s+/g, '') !== phone.trim().replace(/\s+/g, '')) {
-                    throw new Error("Numéro de commande ou de téléphone incorrect.");
+                const dbPhoneClean = matchingOrder.customer_phone.replace(/[\s\-\_\.]/g, '');
+                const inputPhoneClean = phone.replace(/[\s\-\_\.]/g, '');
+                if (dbPhoneClean !== inputPhoneClean) {
+                    // Tolerate basic suffix matches (0560 vs +213560)
+                    const isMatch = dbPhoneClean.endsWith(inputPhoneClean.slice(-8)) || inputPhoneClean.endsWith(dbPhoneClean.slice(-8));
+                    if (!isMatch) {
+                        throw new Error("Numéro de commande ou de téléphone incorrect.");
+                    }
                 }
             } else {
                 throw new Error("Veuillez entrer le numéro de téléphone associé à la commande.");
