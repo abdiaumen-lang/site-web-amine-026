@@ -120,7 +120,7 @@ export default function HomeFooter() {
                         <ul className="flex flex-col gap-2 text-sm text-slate-500 dark:text-slate-400">
                             <li className="flex items-center gap-2">
                                 <span className="material-symbols-outlined text-[18px]">location_on</span>
-                                Alger, Algérie
+                                <a href="https://www.google.com/maps/search/?api=1&query=Alger,+Algérie" target="_blank" rel="noopener noreferrer" className="hover:underline hover:text-primary transition-colors">Alger, Algérie</a>
                             </li>
                             <li className="flex items-center gap-2">
                                 <span className="material-symbols-outlined text-[18px]">call</span>
