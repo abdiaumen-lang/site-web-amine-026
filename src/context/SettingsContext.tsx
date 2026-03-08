@@ -25,6 +25,8 @@ export interface WebsiteSettings {
     social_tiktok?: string | null;
     social_youtube?: string | null;
     social_twitter?: string | null;
+    telegram_bot_token?: string | null;
+    telegram_chat_id?: string | null;
     theme_primary_color?: string | null;
     theme_font_family?: string | null;
     menu_bg_color?: string | null;

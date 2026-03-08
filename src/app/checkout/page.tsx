@@ -7,6 +7,7 @@ import CheckoutFooter from "@/components/CheckoutFooter";
 import CartItemRow from "@/components/CartItemRow";
 import { supabase } from "@/lib/supabase";
 import { useCart } from "@/hooks/useCart";
+import { useSettings } from "@/context/SettingsContext";
 
 type WilayaData = {
     wilaya_name: string;
@@ -47,6 +48,7 @@ export default function CheckoutPage() {
     });
 
     const { cartItems, isLoading: isLoadingCart, refreshCart } = useCart();
+    const { settings } = useSettings();
 
     // Calculated Subtotal from the cart
     const subtotal = cartItems.reduce((acc, item) => acc + (item.products?.price * item.quantity), 0);
@@ -201,6 +203,39 @@ export default function CheckoutPage() {
             } else {
                 // Clear from localStorage
                 localStorage.removeItem('guestCart');
+            }
+
+            // 3.5 Notify Telegram
+            if (settings?.telegram_bot_token && settings?.telegram_chat_id) {
+                try {
+                    const fullOrderForTelegram = {
+                        id: order.id,
+                        customer_name: formData.customer_name,
+                        customer_phone: formData.customer_phone,
+                        address: formData.address,
+                        commune: selectedCommune.commune_name,
+                        wilaya: selectedWilaya,
+                        shipping_cost: shippingCost,
+                        total_amount: total,
+                        order_items: orderItemsToInsert.map((item, index) => ({
+                            quantity: item.quantity,
+                            price_at_time: item.price_at_time,
+                            product_name: cartItems[index].products.name
+                        }))
+                    };
+
+                    fetch('/api/orders/notify', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            order: fullOrderForTelegram,
+                            telegramBotToken: settings.telegram_bot_token,
+                            telegramChatId: settings.telegram_chat_id
+                        })
+                    }).catch(err => console.error("Telegram Webhook Error:", err));
+                } catch (telegramErr) {
+                    console.error("Failed to format Telegram payload:", telegramErr);
+                }
             }
 
             // 4. Notify components and redirect

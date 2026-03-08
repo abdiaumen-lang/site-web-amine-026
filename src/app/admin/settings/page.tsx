@@ -22,6 +22,8 @@ export default function AdminSettingsPage() {
     const [whatsappPosition, setWhatsappPosition] = useState<string>("bottom-right");
     const [whatsappOffsetX, setWhatsappOffsetX] = useState<number>(24);
     const [whatsappOffsetY, setWhatsappOffsetY] = useState<number>(24);
+    const [telegramBotToken, setTelegramBotToken] = useState<string>("");
+    const [telegramChatId, setTelegramChatId] = useState<string>("");
     const [mapsEmbedUrl, setMapsEmbedUrl] = useState<string>("");
     const [mapsStoreImageUrl, setMapsStoreImageUrl] = useState<string>("");
     const [mapsStoreName, setMapsStoreName] = useState<string>("");
@@ -56,6 +58,8 @@ export default function AdminSettingsPage() {
             setWhatsappPosition(settings.whatsapp_position || "bottom-right");
             setWhatsappOffsetX(settings.whatsapp_offset_x || 24);
             setWhatsappOffsetY(settings.whatsapp_offset_y || 24);
+            setTelegramBotToken(settings.telegram_bot_token || "");
+            setTelegramChatId(settings.telegram_chat_id || "");
             setMapsEmbedUrl(settings.maps_embed_url || "");
             setMapsStoreImageUrl(settings.maps_store_image_url || "");
             setMapsStoreName(settings.maps_store_name || "");
@@ -125,6 +129,8 @@ export default function AdminSettingsPage() {
                 whatsapp_position: whatsappPosition,
                 whatsapp_offset_x: whatsappOffsetX,
                 whatsapp_offset_y: whatsappOffsetY,
+                telegram_bot_token: telegramBotToken || null,
+                telegram_chat_id: telegramChatId || null,
                 maps_embed_url: mapsEmbedUrl || null,
                 maps_store_image_url: mapsStoreImageUrl || null,
                 maps_store_name: mapsStoreName || null,
@@ -148,6 +154,9 @@ export default function AdminSettingsPage() {
                 .upsert(updates, { onConflict: "id" });
 
             if (error) {
+                if (error.message.includes("does not exist") && (error.message.includes("telegram_bot_token") || error.message.includes("telegram_chat_id"))) {
+                    throw new Error("Pour sauvegarder les paramètres Telegram, vous DEVEZ d'abord exécuter le script SQL dans Supabase (add_telegram_to_settings.sql). Les colonnes sont absentes dans la base de données !");
+                }
                 throw error;
             }
 
@@ -462,6 +471,56 @@ export default function AdminSettingsPage() {
                                                 </p>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+
+                                {/* Telegram Configuration Section */}
+                                <div className="pt-8 border-t border-slate-200 dark:border-slate-700">
+                                    <div className="flex items-center justify-between mb-6">
+                                        <div>
+                                            <h2 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                                                <svg className="w-5 h-5 fill-sky-500" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" /></svg>
+                                                Notifications Telegram
+                                            </h2>
+                                            <p className="text-sm text-slate-500 mt-1">Recevez une notification instantanée sur Telegram à chaque nouvelle commande.</p>
+                                        </div>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                        <div className="space-y-5">
+                                            <div>
+                                                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Bot Token</label>
+                                                <input
+                                                    type="text"
+                                                    value={telegramBotToken}
+                                                    onChange={(e) => setTelegramBotToken(e.target.value)}
+                                                    placeholder="ex: 123456789:ABCdefGHIjklmNOPqrstUVWxyz"
+                                                    className="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 px-4 py-2.5 text-sm focus:ring-[#0088cc] focus:border-[#0088cc] font-mono"
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div className="space-y-5">
+                                            <div>
+                                                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Chat ID</label>
+                                                <input
+                                                    type="text"
+                                                    value={telegramChatId}
+                                                    onChange={(e) => setTelegramChatId(e.target.value)}
+                                                    placeholder="ex: -1001234567890 ou 12345678"
+                                                    className="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 px-4 py-2.5 text-sm focus:ring-[#0088cc] focus:border-[#0088cc] font-mono"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="mt-6 p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl">
+                                        <p className="text-xs text-amber-700 dark:text-amber-300 flex items-start gap-2">
+                                            <span className="material-symbols-outlined text-sm shrink-0">info</span>
+                                            <span>
+                                                Utilisez <strong>@BotFather</strong> sur Telegram pour créer un bot et obtenir le Token. Pour trouver votre Chat ID, envoyez un message à votre bot, puis accédez à <code>https://api.telegram.org/bot[VOTRE_TOKEN]/getUpdates</code>.
+                                            </span>
+                                        </p>
                                     </div>
                                 </div>
 
