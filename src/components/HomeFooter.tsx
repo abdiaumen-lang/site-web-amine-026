@@ -102,7 +102,7 @@ export default function HomeFooter() {
                             <li><Link className="hover:text-primary transition-colors" href="#">Centre d&apos;Aide</Link></li>
                             <li><Link className="hover:text-primary transition-colors" href="#">Retours &amp; Remboursements</Link></li>
                             <li><Link className="hover:text-primary transition-colors" href="#">Informations de Livraison</Link></li>
-                            <li><Link className="hover:text-primary transition-colors" href="#">Suivre ma commande</Link></li>
+                            <li><Link className="hover:text-primary transition-colors" href="/track">Suivre ma commande</Link></li>
                         </ul>
                     </div>
                     <div>
@@ -128,7 +128,7 @@ export default function HomeFooter() {
                             </li>
                             <li className="flex items-center gap-2">
                                 <span className="material-symbols-outlined text-[18px]">mail</span>
-                                support@electromart.dz
+                                aminebenslimane13
                             </li>
                         </ul>
                     </div>

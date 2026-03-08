@@ -29,6 +29,7 @@ interface Order {
     status: 'pending' | 'confirmed' | 'delivered' | 'cancelled';
     total_amount: number;
     shipping_cost: number;
+    tracking_notes?: string | null;
     order_items?: OrderItem[];
 }
 
@@ -46,6 +47,7 @@ export default function AdminSalesPage() {
     // Modal State
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [trackingNotesInput, setTrackingNotesInput] = useState<string>("");
 
     useEffect(() => {
         fetchOrders();
@@ -100,20 +102,25 @@ export default function AdminSalesPage() {
         setFilteredOrders(docs);
     };
 
-    const handleUpdateStatus = async (orderId: string, newStatus: string) => {
+    const handleUpdateOrder = async (orderId: string, newStatus: string, newNotes: string) => {
         try {
             const { error } = await supabase
                 .from('orders')
-                .update({ status: newStatus, updated_at: new Date().toISOString() })
+                .update({
+                    status: newStatus,
+                    tracking_notes: newNotes || null,
+                    updated_at: new Date().toISOString()
+                })
                 .eq('id', orderId);
 
             if (error) throw error;
 
             // Update local state
-            setOrders(orders.map(o => o.id === orderId ? { ...o, status: newStatus as any } : o));
+            setOrders(orders.map(o => o.id === orderId ? { ...o, status: newStatus as any, tracking_notes: newNotes } : o));
             if (selectedOrder && selectedOrder.id === orderId) {
-                setSelectedOrder({ ...selectedOrder, status: newStatus as any });
+                setSelectedOrder({ ...selectedOrder, status: newStatus as any, tracking_notes: newNotes });
             }
+            alert("Mise à jour enregistrée avec succès.");
         } catch (err: any) {
             alert("Erreur lors de la mise à jour : " + err.message);
         }
@@ -299,6 +306,7 @@ export default function AdminSalesPage() {
                                                             <button
                                                                 onClick={() => {
                                                                     setSelectedOrder(order);
+                                                                    setTrackingNotesInput(order.tracking_notes || "");
                                                                     setIsModalOpen(true);
                                                                 }}
                                                                 className="px-4 py-2 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-xl text-xs font-bold transition-all active:scale-95"
@@ -339,25 +347,47 @@ export default function AdminSalesPage() {
                         {/* Modal Body */}
                         <div className="flex-1 overflow-y-auto p-6 md:p-8 flex flex-col gap-8 custom-scrollbar">
 
-                            {/* Status Update */}
-                            <div className="p-5 rounded-2xl bg-primary/5 border border-primary/10 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                                <div className="flex items-center gap-3">
-                                    <span className="material-symbols-outlined text-primary bg-white size-10 flex items-center justify-center rounded-xl shadow-sm border border-primary/10">info</span>
-                                    <div>
-                                        <p className="text-sm font-black text-stone-900">Mettre à jour le statut</p>
-                                        <p className="text-xs text-stone-500">Changez l'état d'avancement du colis.</p>
+                            {/* Status and Notes Update */}
+                            <div className="p-5 rounded-2xl bg-primary/5 border border-primary/10 flex flex-col gap-5">
+                                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                    <div className="flex items-center gap-3">
+                                        <span className="material-symbols-outlined text-primary bg-white size-10 flex items-center justify-center rounded-xl shadow-sm border border-primary/10">info</span>
+                                        <div>
+                                            <p className="text-sm font-black text-stone-900">Mettre à jour le statut</p>
+                                            <p className="text-xs text-stone-500">Modifiez le statut ou le lieu de livraison.</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex gap-2">
+                                        {['pending', 'confirmed', 'delivered', 'cancelled'].map((st) => (
+                                            <button
+                                                key={st}
+                                                onClick={() => {
+                                                    const updatedOrder = { ...selectedOrder, status: st as any };
+                                                    setSelectedOrder(updatedOrder);
+                                                }}
+                                                className={`px-3 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all border ${selectedOrder.status === st ? getStatusColor(st) : 'bg-white border-stone-200 text-stone-400 hover:border-stone-400'}`}
+                                            >
+                                                {st === 'pending' ? 'Attente' : st === 'confirmed' ? 'Confirmé' : st === 'delivered' ? 'Livré' : 'Annulé'}
+                                            </button>
+                                        ))}
                                     </div>
                                 </div>
-                                <div className="flex gap-2">
-                                    {['pending', 'confirmed', 'delivered', 'cancelled'].map((st) => (
-                                        <button
-                                            key={st}
-                                            onClick={() => handleUpdateStatus(selectedOrder.id, st)}
-                                            className={`px-3 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all border ${selectedOrder.status === st ? getStatusColor(st) : 'bg-white border-stone-200 text-stone-400 hover:border-stone-400'}`}
-                                        >
-                                            {st === 'pending' ? 'Attente' : st === 'confirmed' ? 'Confirmé' : st === 'delivered' ? 'Livré' : 'Annulé'}
-                                        </button>
-                                    ))}
+                                <div className="flex flex-col gap-2">
+                                    <label className="text-[10px] font-bold text-stone-400 uppercase tracking-tighter">Notes de suivi (Lieu actuel, Message au client)</label>
+                                    <textarea
+                                        className="w-full h-24 p-3 rounded-xl border border-stone-200 bg-white text-sm focus:border-primary focus:ring-primary focus:outline-none resize-none"
+                                        placeholder="Ex: Le produit est actuellement au centre de distribution d'Alger..."
+                                        value={trackingNotesInput}
+                                        onChange={(e) => setTrackingNotesInput(e.target.value)}
+                                    ></textarea>
+                                </div>
+                                <div className="flex justify-end">
+                                    <button
+                                        onClick={() => handleUpdateOrder(selectedOrder.id, selectedOrder.status, trackingNotesInput)}
+                                        className="px-5 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 text-white text-xs font-bold transition-all"
+                                    >
+                                        Enregistrer les modifications
+                                    </button>
                                 </div>
                             </div>
 
