@@ -108,11 +108,11 @@ export default function HomeFooter() {
                     <div>
                         <h4 className="font-bold text-slate-900 dark:text-white mb-4">Catégories</h4>
                         <ul className="flex flex-col gap-2 text-sm text-slate-500 dark:text-slate-400">
-                            <li><Link className="hover:text-primary transition-colors" href="#">Machine à café</Link></li>
-                            <li><Link className="hover:text-primary transition-colors" href="#">Cuisine et cuisson</Link></li>
-                            <li><Link className="hover:text-primary transition-colors" href="#">Maison &amp; Entretien</Link></li>
-                            <li><Link className="hover:text-primary transition-colors" href="#">Beauté &amp; Santé</Link></li>
-                            <li><Link className="hover:text-primary transition-colors" href="#">Informatique &amp; Tablettes</Link></li>
+                            <li><Link className="hover:text-primary transition-colors" href="/product?category=0e467bd3-e64b-4522-b178-dd8604ea2900">Machine à café</Link></li>
+                            <li><Link className="hover:text-primary transition-colors" href="/product?category=c6cdbc35-ee7e-4d69-a38c-63f8a990c473">Cuisine et cuisson</Link></li>
+                            <li><Link className="hover:text-primary transition-colors" href="/product?category=fe3f0722-342e-42ec-ae48-53aedd335b2f">Maison &amp; Entretien</Link></li>
+                            <li><Link className="hover:text-primary transition-colors" href="/product?category=19497e0c-1bbd-493e-a8f8-d06eb3fabac0">Beauté &amp; Santé</Link></li>
+                            <li><Link className="hover:text-primary transition-colors" href="/product?category=e1a97cc0-2206-4af7-9bba-8668c5de48f9">Informatique &amp; Tablettes</Link></li>
                         </ul>
                     </div>
                     <div>
