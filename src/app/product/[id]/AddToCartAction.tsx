@@ -22,7 +22,8 @@ export default function AddToCartAction({ productId, stock, price }: AddToCartAc
 
         try {
             // Check if user is logged in
-            const { data: { user } } = await supabase.auth.getUser();
+            const { data, error: authError } = await supabase.auth.getUser();
+            const user = data?.user;
 
             if (!user) {
                 // Support guest cart via localStorage

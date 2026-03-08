@@ -15,7 +15,8 @@ export default function CartItemRow({ item, refreshCart }: CartItemRowProps) {
         if (newQuantity < 1) return;
         setIsUpdating(true);
         try {
-            const { data: { user } } = await supabase.auth.getUser();
+            const { data, error: authError } = await supabase.auth.getUser();
+            const user = data?.user;
 
             if (!user) {
                 // Handle guest cart update
@@ -49,7 +50,8 @@ export default function CartItemRow({ item, refreshCart }: CartItemRowProps) {
     const handleRemove = async () => {
         setIsUpdating(true);
         try {
-            const { data: { user } } = await supabase.auth.getUser();
+            const { data, error: authError } = await supabase.auth.getUser();
+            const user = data?.user;
 
             if (!user) {
                 // Handle guest cart remove

@@ -266,7 +266,8 @@ function ProductCatalogContent() {
 
         setAddingToCart(prev => ({ ...prev, [productId]: true }));
         try {
-            const { data: { user } } = await supabase.auth.getUser();
+            const { data, error: authError } = await supabase.auth.getUser();
+            const user = data?.user;
             if (!user) {
                 const guestCart = JSON.parse(localStorage.getItem('guestCart') || '[]');
                 const idx = guestCart.findIndex((item: any) => item.product_id === productId);

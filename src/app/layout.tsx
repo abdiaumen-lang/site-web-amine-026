@@ -38,6 +38,20 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                for (let i = 0; i < localStorage.length; i++) {
+                  const key = localStorage.key(i);
+                  if (key && key.startsWith('sb-') && key.endsWith('-auth-token')) {
+                    localStorage.removeItem(key);
+                  }
+                }
+              } catch (e) {}
+            `,
+          }}
+        />
       </head>
       <body
         className={`${inter.variable} bg-white md:dark:bg-slate-900 font-display text-slate-900 md:dark:text-slate-100 antialiased overflow-x-hidden`}

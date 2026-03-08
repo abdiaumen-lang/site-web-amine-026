@@ -83,7 +83,8 @@ export default function CheckoutPage() {
         fetchActiveWilayas();
         // Pre-fill email if user is logged in
         const checkUser = async () => {
-            const { data: { user } } = await supabase.auth.getUser();
+            const { data, error: authError } = await supabase.auth.getUser();
+            const user = data?.user;
             if (user?.email) {
                 setFormData(prev => ({ ...prev, customer_email: user.email || "" }));
             }
@@ -192,7 +193,8 @@ export default function CheckoutPage() {
             if (itemsError) throw itemsError;
 
             // 3. Clear the cart
-            const { data: { user } } = await supabase.auth.getUser();
+            const { data, error: authError } = await supabase.auth.getUser();
+            const user = data?.user;
             if (user) {
                 // Clear from DB
                 await supabase.from('cart').delete().eq('user_id', user.id);
