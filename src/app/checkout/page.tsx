@@ -224,7 +224,7 @@ export default function CheckoutPage() {
                         }))
                     };
 
-                    fetch('/api/orders/notify', {
+                    await fetch('/api/orders/notify', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({

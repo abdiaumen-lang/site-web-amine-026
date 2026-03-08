@@ -9,18 +9,18 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'Missing Telegram configuration' }, { status: 400 });
         }
 
-        let msg = `🛍️ *Nouvelle Commande #EM-${order.id.slice(0, 6).toUpperCase()}*\n\n`;
-        msg += `👤 *Client:* ${order.customer_name}\n`;
-        msg += `📞 *Téléphone:* ${order.customer_phone}\n`;
-        msg += `📍 *Adresse:* ${order.address}, ${order.commune}, ${order.wilaya}\n\n`;
-        msg += `📦 *Produits commandés:*\n`;
+        let msg = `🛍️ <b>Nouvelle Commande #EM-${order.id.slice(0, 6).toUpperCase()}</b>\n\n`;
+        msg += `👤 <b>Client:</b> ${order.customer_name}\n`;
+        msg += `📞 <b>Téléphone:</b> ${order.customer_phone}\n`;
+        msg += `📍 <b>Adresse:</b> ${order.address}, ${order.commune}, ${order.wilaya}\n\n`;
+        msg += `📦 <b>Produits commandés:</b>\n`;
 
         order.order_items?.forEach((item: any) => {
             msg += `- ${item.quantity}x ${item.product_name} (${item.price_at_time.toLocaleString()} DA)\n`;
         });
 
-        msg += `\n🚚 *Livraison:* ${order.shipping_cost === 0 ? 'GRATUIT' : `${order.shipping_cost.toLocaleString()} DA`}\n`;
-        msg += `💰 *Total à payer:* ${order.total_amount.toLocaleString()} DA\n`;
+        msg += `\n🚚 <b>Livraison:</b> ${order.shipping_cost === 0 ? 'GRATUIT' : `${order.shipping_cost.toLocaleString()} DA`}\n`;
+        msg += `💰 <b>Total à payer:</b> ${order.total_amount.toLocaleString()} DA\n`;
 
         const telegramApiUrl = `https://api.telegram.org/bot${telegramBotToken}/sendMessage`;
 
@@ -32,7 +32,7 @@ export async function POST(request: Request) {
             body: JSON.stringify({
                 chat_id: telegramChatId,
                 text: msg,
-                parse_mode: 'Markdown',
+                parse_mode: 'HTML',
             }),
         });
 
