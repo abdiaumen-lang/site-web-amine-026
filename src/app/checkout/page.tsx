@@ -205,7 +205,7 @@ export default function CheckoutPage() {
 
             // 4. Notify components and redirect
             window.dispatchEvent(new Event('cartUpdated'));
-            window.location.href = '/checkout/success';
+            window.location.href = '/checkout/success?order_id=' + order.id;
         } catch (error: any) {
             console.error('Error submitting order:', error);
             alert("Erreur lors de la confirmation de la commande: " + error.message);
