@@ -6,8 +6,8 @@ import Logo from "@/components/Logo";
 import Link from "next/link";
 
 export default function AdminLoginPage() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("aminebenslimane13@gmail.com");
+    const [password, setPassword] = useState("ElectroMart@2026");
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
@@ -27,7 +27,7 @@ export default function AdminLoginPage() {
 
         // Simulate local authentication logic
         setTimeout(() => {
-            if (email === "ElectroMart123@gmail.com" && password === "ElectroMart@2026") {
+            if (email === "aminebenslimane13@gmail.com" && password === "ElectroMart@2026") {
                 localStorage.setItem("adminAuth", "true");
                 router.push("/admin");
             } else {
