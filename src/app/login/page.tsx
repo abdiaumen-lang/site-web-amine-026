@@ -57,24 +57,32 @@ export default function LoginPage() {
                     )}
 
                     <form onSubmit={handleLogin} autoComplete="off" className="flex flex-col gap-6">
+                        {/* Hidden dummy fields to trick browser autofill */}
+                        <div style={{ display: 'none' }} aria-hidden="true">
+                            <input type="text" name="user_email_fake" tabIndex={-1} autoComplete="off" />
+                            <input type="password" name="user_password_fake" tabIndex={-1} autoComplete="off" />
+                        </div>
+
                         <div className="flex flex-col gap-2">
                             <label className="text-sm font-semibold text-text-main" htmlFor="email">Email</label>
                             <input
-                                id="email"
+                                id="user_login_credential"
+                                name="user_login_field"
                                 type="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 className="rounded-lg border-stone-300 focus:ring-primary focus:border-primary w-full py-2.5 px-4"
                                 placeholder="votre@email.com"
                                 required
-                                autoComplete="off"
+                                autoComplete="new-password"
                             />
                         </div>
 
                         <div className="flex flex-col gap-2">
                             <label className="text-sm font-semibold text-text-main" htmlFor="password">Mot de passe</label>
                             <input
-                                id="password"
+                                id="user_secret_credential"
+                                name="user_secret_field"
                                 type="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
