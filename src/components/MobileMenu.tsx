@@ -222,23 +222,25 @@ export default function MobileMenu() {
                         </div>
                     )}
 
-                    {/* Admin Access Link */}
-                    <div className={`${hasContact ? 'mt-2' : 'mt-4'} pt-4 border-t border-white/10`}>
-                        <Link
-                            href="/admin-login"
-                            onClick={() => setIsOpen(false)}
-                            className="flex items-center gap-4 p-3 rounded-xl bg-primary/10 border border-primary/20 hover:bg-primary/20 transition-all group"
-                        >
-                            <div className="size-10 bg-primary/20 rounded-lg flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
-                                <span className="material-symbols-outlined">admin_panel_settings</span>
-                            </div>
-                            <div className="flex flex-col">
-                                <span className="text-white font-bold text-sm">Espace Admin</span>
-                                <span className="text-primary-light/60 text-[10px]">Gérer la boutique</span>
-                            </div>
-                            <span className="material-symbols-outlined text-white/20 ml-auto text-sm">open_in_new</span>
-                        </Link>
-                    </div>
+                    {/* Admin Access Link - Hidden by default, shows only on /admin or with ?show_admin=true */}
+                    {(window.location.pathname.startsWith('/admin') || new URLSearchParams(window.location.search).get('show_admin') === 'true') && (
+                        <div className={`${hasContact ? 'mt-2' : 'mt-4'} pt-4 border-t border-white/10`}>
+                            <Link
+                                href="/admin-login"
+                                onClick={() => setIsOpen(false)}
+                                className="flex items-center gap-4 p-3 rounded-xl bg-primary/10 border border-primary/20 hover:bg-primary/20 transition-all group"
+                            >
+                                <div className="size-10 bg-primary/20 rounded-lg flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+                                    <span className="material-symbols-outlined">admin_panel_settings</span>
+                                </div>
+                                <div className="flex flex-col">
+                                    <span className="text-white font-bold text-sm">Espace Admin</span>
+                                    <span className="text-primary-light/60 text-[10px]">Gérer la boutique</span>
+                                </div>
+                                <span className="material-symbols-outlined text-white/20 ml-auto text-sm">open_in_new</span>
+                            </Link>
+                        </div>
+                    )}
                 </div>
             </div>
         </>
