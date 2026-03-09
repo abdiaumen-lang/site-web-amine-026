@@ -41,7 +41,7 @@ function ProductCard({ product, onAddToCart, isAdding }: {
         : null;
 
     return (
-        <div className="group flex flex-col h-full bg-white dark:bg-slate-900 p-2 rounded-3xl transition-all duration-300">
+        <div className="group flex flex-col h-full bg-white dark:bg-slate-900 p-2 rounded-3xl border border-slate-100 dark:border-slate-800 transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.05)] dark:hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
             <Link href={`/product/${product.id}`} className="relative aspect-[4/5] bg-white rounded-2xl overflow-hidden mb-4 block group">
                 {discount && discount > 0 && (
                     <span className="absolute top-4 left-4 bg-primary text-white text-[10px] font-black px-2 py-1 rounded-sm uppercase tracking-widest z-10 shadow-sm">
@@ -62,16 +62,16 @@ function ProductCard({ product, onAddToCart, isAdding }: {
                 />
             </Link>
 
-            <div className="flex flex-col flex-1 items-start text-left gap-2 px-2 pb-2">
+            <div className="flex flex-col flex-1 items-center text-center gap-2 px-2 pb-2">
                 <Link href={`/product/${product.id}`} className="block w-full">
                     <h3 className="font-semibold text-slate-800 dark:text-slate-100 text-[15px] leading-tight hover:text-primary transition-colors line-clamp-2 h-10">
                         {product.name}
                     </h3>
                 </Link>
 
-                <div className="flex flex-col mt-1">
+                <div className="flex flex-col mt-1 items-center">
                     {product.original_price && product.original_price > product.price ? (
-                        <div className="flex flex-col">
+                        <div className="flex flex-col items-center">
                             <span className="text-slate-400 text-xs line-through">{product.original_price.toLocaleString('en-US', { minimumFractionDigits: 2 })} DA</span>
                             <span className="text-slate-900 dark:text-white font-bold text-lg">DA {product.price.toLocaleString('en-US', { minimumFractionDigits: 2 })} DZD</span>
                         </div>
@@ -82,7 +82,7 @@ function ProductCard({ product, onAddToCart, isAdding }: {
 
                 <Link href={`/product/${product.id}`} className="mt-4 w-full">
                     <button className="w-full py-3 px-6 border-2 border-slate-900 dark:border-white text-slate-900 dark:text-white font-bold rounded-2xl hover:bg-slate-900 hover:text-white dark:hover:bg-white dark:hover:text-slate-900 transition-all duration-300 text-sm">
-                        Choisir des options
+                        Voir le produits
                     </button>
                 </Link>
             </div>

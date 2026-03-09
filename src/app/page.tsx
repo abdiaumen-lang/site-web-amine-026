@@ -135,7 +135,7 @@ export default async function Home() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {featuredProducts && featuredProducts.map((product) => (
-              <div key={product.id} className="group flex flex-col h-full">
+              <div key={product.id} className="group flex flex-col h-full bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl p-1.5 transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.05)] dark:hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
                 <Link href={`/product/${product.id}`} className="relative aspect-[4/5] bg-white rounded-2xl overflow-hidden mb-4 block group">
                   {product.discount_price && (
                     <span className="absolute top-4 left-4 bg-primary text-white text-[10px] font-black px-2 py-1 rounded-sm uppercase tracking-widest z-10 shadow-sm">
@@ -150,15 +150,15 @@ export default async function Home() {
                     src={product.images?.[0] || 'https://via.placeholder.com/500x625?text=Electromart'}
                   />
                 </Link>
-                <div className="flex flex-col flex-1 items-start text-left gap-2 px-1">
+                <div className="flex flex-col flex-1 items-center text-center gap-2 px-1">
                   <Link href={`/product/${product.id}`} className="block w-full">
                     <h3 className="font-semibold text-slate-800 dark:text-slate-100 text-[15px] leading-tight hover:text-primary transition-colors">
                       {product.name}
                     </h3>
                   </Link>
-                  <div className="flex flex-col mt-1">
+                  <div className="flex flex-col mt-1 items-center">
                     {product.discount_price ? (
-                      <div className="flex flex-col">
+                      <div className="flex flex-col items-center">
                         <span className="text-slate-400 text-xs line-through">{product.price.toLocaleString('en-US', { minimumFractionDigits: 2 })} DA</span>
                         <span className="text-slate-900 dark:text-white font-bold text-lg">DA {product.discount_price.toLocaleString('en-US', { minimumFractionDigits: 2 })} DZD</span>
                       </div>
@@ -169,7 +169,7 @@ export default async function Home() {
 
                   <Link href={`/product/${product.id}`} className="mt-4 w-full">
                     <button className="w-full py-3 px-6 border-2 border-slate-900 dark:border-white text-slate-900 dark:text-white font-bold rounded-2xl hover:bg-slate-900 hover:text-white dark:hover:bg-white dark:hover:text-slate-900 transition-all duration-300 text-sm">
-                      Choisir des options
+                      Voir le produits
                     </button>
                   </Link>
                 </div>

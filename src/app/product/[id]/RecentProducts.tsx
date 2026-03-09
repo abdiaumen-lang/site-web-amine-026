@@ -36,34 +36,39 @@ export default async function RecentProducts({ currentProductId }: RecentProduct
                 </Link>
             </div>
 
-            <div className="flex md:grid md:grid-cols-5 lg:grid-cols-6 gap-3 md:gap-4 overflow-x-auto pb-4 md:pb-0 -mx-1 px-1 snap-x select-none" style={{ scrollbarWidth: 'none' }}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {(products as Product[]).map((product) => (
-                    <Link
-                        key={product.id}
-                        href={`/product/${product.id}`}
-                        className="w-[120px] xs:w-[140px] sm:w-[160px] md:w-auto min-w-[120px] flex-shrink-0 group snap-start"
-                    >
-                        <div className="flex flex-col gap-2 md:gap-3">
-                            <div className="aspect-square rounded-lg md:rounded-xl bg-slate-50 dark:bg-slate-800/50 overflow-hidden border border-slate-100 dark:border-slate-800 transition-all md:group-hover:shadow-md md:group-hover:scale-[1.02] md:group-hover:border-primary/20 relative">
-                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img
-                                    src={product.image || (product.images && product.images[0]) || "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?q=80&w=400&auto=format"}
-                                    alt={product.name}
-                                    className="w-full h-full object-cover transition-transform duration-700 md:group-hover:scale-110"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                            </div>
-                            <div className="flex flex-col gap-0.5 px-0.5">
-                                <h3 className="font-bold text-slate-900 dark:text-white text-[10px] md:text-xs line-clamp-1 group-hover:text-primary transition-colors">
+                    <div key={product.id} className="group flex flex-col h-full bg-white dark:bg-slate-900 p-2 rounded-3xl border border-slate-100 dark:border-slate-800 transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.05)] dark:hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
+                        <Link href={`/product/${product.id}`} className="relative aspect-[4/5] bg-white rounded-2xl overflow-hidden mb-4 block group">
+                            <img
+                                alt={product.name}
+                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                src={product.image || (product.images && product.images[0]) || "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?q=80&w=400&auto=format"}
+                                loading="lazy"
+                                decoding="async"
+                            />
+                        </Link>
+
+                        <div className="flex flex-col flex-1 items-center text-center gap-2 px-2 pb-2">
+                            <Link href={`/product/${product.id}`} className="block w-full">
+                                <h3 className="font-semibold text-slate-800 dark:text-slate-100 text-[14px] leading-tight hover:text-primary transition-colors line-clamp-2 h-9">
                                     {product.name}
                                 </h3>
-                                <p className="text-primary font-black text-xs md:text-sm">
-                                    {product.price.toLocaleString()} DA
+                            </Link>
+
+                            <div className="flex flex-col mt-1 items-center">
+                                <p className="text-slate-900 dark:text-white font-bold text-sm md:text-md">
+                                    DA {product.price.toLocaleString('en-US', { minimumFractionDigits: 2 })} DZD
                                 </p>
                             </div>
+
+                            <Link href={`/product/${product.id}`} className="mt-4 w-full">
+                                <button className="w-full py-2.5 px-4 border-2 border-slate-900 dark:border-white text-slate-900 dark:text-white font-bold rounded-2xl hover:bg-slate-900 hover:text-white dark:hover:bg-white dark:hover:text-slate-900 transition-all duration-300 text-[13px]">
+                                    Voir le produits
+                                </button>
+                            </Link>
                         </div>
-                    </Link>
+                    </div>
                 ))}
             </div>
         </div>
