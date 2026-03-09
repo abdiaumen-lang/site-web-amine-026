@@ -5,13 +5,18 @@ import { createPortal } from "react-dom";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { useSettings } from "@/context/SettingsContext";
+import { usePathname, useSearchParams } from "next/navigation";
 
-export default function MobileMenu() {
+import { Suspense } from "react";
+
+function MobileMenuContent() {
     const [isOpen, setIsOpen] = useState(false);
     const [mounted, setMounted] = useState(false);
     const [categories, setCategories] = useState<any[]>([]);
     const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
     const { settings } = useSettings();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
 
     // Fetch categories and subcategories from Supabase
     useEffect(() => {
@@ -223,7 +228,7 @@ export default function MobileMenu() {
                     )}
 
                     {/* Admin Access Link - Hidden by default, shows only on /admin or with ?show_admin=true */}
-                    {(window.location.pathname.startsWith('/admin') || new URLSearchParams(window.location.search).get('show_admin') === 'true') && (
+                    {((pathname && pathname.startsWith('/admin')) || searchParams?.get('show_admin') === 'true') && (
                         <div className={`${hasContact ? 'mt-2' : 'mt-4'} pt-4 border-t border-white/10`}>
                             <Link
                                 href="/admin-login"
@@ -257,5 +262,13 @@ export default function MobileMenu() {
             </button>
             {mounted && createPortal(menuContent, document.body)}
         </>
+    );
+}
+
+export default function MobileMenu() {
+    return (
+        <Suspense fallback={null}>
+            <MobileMenuContent />
+        </Suspense>
     );
 }
