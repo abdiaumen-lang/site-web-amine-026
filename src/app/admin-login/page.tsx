@@ -6,8 +6,8 @@ import Logo from "@/components/Logo";
 import Link from "next/link";
 
 export default function AdminLoginPage() {
-    const [email, setEmail] = useState("aminebenslimane13@gmail.com");
-    const [password, setPassword] = useState("ElectroMart@2026");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
