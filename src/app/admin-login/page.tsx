@@ -58,19 +58,26 @@ export default function AdminLoginPage() {
                     )}
 
                     <form onSubmit={handleLogin} className="flex flex-col gap-6" autoComplete="off">
+                        {/* Hidden dummy fields to trick browser autofill */}
+                        <div style={{ display: 'none' }} aria-hidden="true">
+                            <input type="text" name="user_email_fake" tabIndex={-1} autoComplete="off" />
+                            <input type="password" name="user_password_fake" tabIndex={-1} autoComplete="off" />
+                        </div>
+
                         <div className="flex flex-col gap-2">
                             <label className="text-sm font-bold text-slate-700 dark:text-slate-300 ml-1" htmlFor="email">Email professionnel</label>
                             <div className="relative">
                                 <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 material-symbols-outlined text-[20px]">mail</span>
                                 <input
-                                    id="email"
+                                    id="admin_user_id"
+                                    name="admin_user_field"
                                     type="email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     className="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border-transparent focus:bg-white dark:focus:bg-slate-800 border-2 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all text-sm outline-none text-slate-900 dark:text-white"
                                     placeholder="admin@electromart.com"
                                     required
-                                    autoComplete="off"
+                                    autoComplete="new-password"
                                 />
                             </div>
                         </div>
@@ -80,7 +87,8 @@ export default function AdminLoginPage() {
                             <div className="relative">
                                 <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 material-symbols-outlined text-[20px]">lock</span>
                                 <input
-                                    id="password"
+                                    id="admin_secret_key"
+                                    name="admin_secret_field"
                                     type="password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
