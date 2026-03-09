@@ -135,52 +135,43 @@ export default async function Home() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {featuredProducts && featuredProducts.map((product) => (
-              <div key={product.id} className="group bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 overflow-hidden flex flex-col hover:shadow-xl hover:shadow-slate-200/50 dark:hover:shadow-black/30 transition-all duration-300">
-                <Link href={`/product/${product.id}`} className="relative aspect-[4/3] bg-slate-50 dark:bg-slate-900 overflow-hidden p-4 block">
+              <div key={product.id} className="group flex flex-col h-full">
+                <Link href={`/product/${product.id}`} className="relative aspect-[4/5] bg-white rounded-2xl overflow-hidden mb-4 block group">
                   {product.discount_price && (
-                    <span className="absolute top-3 left-3 bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider z-10">
+                    <span className="absolute top-4 left-4 bg-primary text-white text-[10px] font-black px-2 py-1 rounded-sm uppercase tracking-widest z-10 shadow-sm">
                       -{Math.round(((product.price - product.discount_price) / product.price) * 100)}%
                     </span>
                   )}
-                  <Image width={400} height={300} alt={product.name}
-                    className="w-full h-full object-contain md:group-hover:scale-105 transition-transform duration-500"
-                    src={product.images?.[0] || 'https://via.placeholder.com/400x300?text=No+Image'}
+                  <Image
+                    width={500}
+                    height={625}
+                    alt={product.name}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    src={product.images?.[0] || 'https://via.placeholder.com/500x625?text=Electromart'}
                   />
-                  <button className="absolute top-3 right-3 p-2 rounded-full bg-white dark:bg-slate-800 shadow-sm opacity-0 group-hover:opacity-100 transition-opacity text-slate-400 hover:text-red-500">
-                    <span className="material-symbols-outlined text-[20px]">favorite</span>
-                  </button>
                 </Link>
-                <div className="p-5 flex flex-col flex-1 gap-2">
-                  <div className="flex items-center gap-1 text-yellow-400 text-sm">
-                    <span className="material-symbols-outlined text-[16px] fill-current">star</span>
-                    <span className="material-symbols-outlined text-[16px] fill-current">star</span>
-                    <span className="material-symbols-outlined text-[16px] fill-current">star</span>
-                    <span className="material-symbols-outlined text-[16px] fill-current">star</span>
-                    <span className="material-symbols-outlined text-[16px] fill-current">star_half</span>
-                    <span className="text-slate-400 text-xs ml-1">(42)</span>
-                  </div>
-                  <Link href={`/product/${product.id}`}>
-                    <h3 className="font-bold text-slate-900 dark:text-white leading-tight line-clamp-2 min-h-[2.5rem] hover:text-primary transition-colors">
+                <div className="flex flex-col flex-1 items-start text-left gap-2 px-1">
+                  <Link href={`/product/${product.id}`} className="block w-full">
+                    <h3 className="font-semibold text-slate-800 dark:text-slate-100 text-[15px] leading-tight hover:text-primary transition-colors">
                       {product.name}
                     </h3>
                   </Link>
-                  <div className="mt-auto pt-4 flex items-center justify-between">
-                    <div className="flex flex-col">
-                      {product.discount_price ? (
-                        <>
-                          <span className="text-slate-400 text-xs line-through">{product.price.toLocaleString()} DA</span>
-                          <span className="text-primary text-xl font-black">{product.discount_price.toLocaleString()} DA</span>
-                        </>
-                      ) : (
-                        <span className="text-primary text-xl font-black">{product.price.toLocaleString()} DA</span>
-                      )}
-                    </div>
-                    <div className="flex gap-2">
-                      <Link href={`/product/${product.id}`} className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 p-2.5 rounded-lg hover:bg-primary hover:text-white dark:hover:text-white transition-colors">
-                        <span className="material-symbols-outlined text-[20px]">shopping_cart</span>
-                      </Link>
-                    </div>
+                  <div className="flex flex-col mt-1">
+                    {product.discount_price ? (
+                      <div className="flex flex-col">
+                        <span className="text-slate-400 text-xs line-through">{product.price.toLocaleString('en-US', { minimumFractionDigits: 2 })} DA</span>
+                        <span className="text-slate-900 dark:text-white font-bold text-lg">DA {product.discount_price.toLocaleString('en-US', { minimumFractionDigits: 2 })} DZD</span>
+                      </div>
+                    ) : (
+                      <span className="text-slate-900 dark:text-white font-bold text-lg">DA {product.price.toLocaleString('en-US', { minimumFractionDigits: 2 })} DZD</span>
+                    )}
                   </div>
+
+                  <Link href={`/product/${product.id}`} className="mt-4 w-full">
+                    <button className="w-full py-3 px-6 border-2 border-slate-900 dark:border-white text-slate-900 dark:text-white font-bold rounded-2xl hover:bg-slate-900 hover:text-white dark:hover:bg-white dark:hover:text-slate-900 transition-all duration-300 text-sm">
+                      Choisir des options
+                    </button>
+                  </Link>
                 </div>
               </div>
             ))}

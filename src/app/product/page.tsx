@@ -41,120 +41,50 @@ function ProductCard({ product, onAddToCart, isAdding }: {
         : null;
 
     return (
-        <div className="group bg-white dark:bg-slate-800/80 rounded-2xl md:rounded-3xl border border-slate-100 dark:border-slate-700/50 overflow-hidden flex flex-col hover:shadow-2xl hover:shadow-primary/5 hover:border-primary/20 hover:-translate-y-1.5 transition-all duration-300 ease-out shadow-sm relative">
-            <Link href={`/product/${product.id}`} className="relative block overflow-hidden bg-slate-50/50 dark:bg-slate-900/50 p-2" style={{ aspectRatio: '4/3' }}>
-                {/* Badges */}
-                <div className="absolute top-4 left-4 z-10 flex flex-col gap-1.5">
-                    {product.stock === 0 && (
-                        <span className="bg-red-500/90 backdrop-blur-sm text-white text-[9px] font-black px-2.5 py-1.5 rounded-lg uppercase tracking-wider shadow-sm">
-                            Épuisé
-                        </span>
-                    )}
-                    {discount && discount > 0 && (
-                        <span className="bg-primary/90 backdrop-blur-sm text-white text-[9px] font-black px-2.5 py-1.5 rounded-lg uppercase tracking-wider shadow-sm flex items-center gap-0.5">
-                            <span className="material-symbols-outlined text-[10px]">sell</span>
-                            -{discount}%
-                        </span>
-                    )}
-                </div>
-
-                <div className="w-full h-full bg-white dark:bg-slate-800 rounded-xl md:rounded-2xl overflow-hidden relative shadow-sm">
-                    <img
-                        alt={product.name}
-                        className="w-full h-full object-contain p-4 md:p-6 group-hover:scale-110 transition-transform duration-500 ease-out"
-                        src={product.image || "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?q=80&w=400&auto=format"}
-                        loading="lazy"
-                        decoding="async"
-                    />
-                </div>
-
-                {/* Wishlist btn */}
-                <button
-                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
-                    className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/90 dark:bg-slate-800/90 backdrop-blur-md shadow-md flex items-center justify-center text-slate-400 hover:text-red-500 hover:scale-110 hover:shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 z-10"
-                >
-                    <span className="material-symbols-outlined text-[18px]">favorite</span>
-                </button>
+        <div className="group flex flex-col h-full bg-white dark:bg-slate-900 p-2 rounded-3xl transition-all duration-300">
+            <Link href={`/product/${product.id}`} className="relative aspect-[4/5] bg-white rounded-2xl overflow-hidden mb-4 block group">
+                {discount && discount > 0 && (
+                    <span className="absolute top-4 left-4 bg-primary text-white text-[10px] font-black px-2 py-1 rounded-sm uppercase tracking-widest z-10 shadow-sm">
+                        -{discount}%
+                    </span>
+                )}
+                {product.stock === 0 && (
+                    <span className="absolute top-4 right-4 bg-red-500 text-white text-[10px] font-black px-2 py-1 rounded-sm uppercase tracking-widest z-10 shadow-sm">
+                        Épuisé
+                    </span>
+                )}
+                <img
+                    alt={product.name}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    src={product.image || product.images?.[0] || "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?q=80&w=400&auto=format"}
+                    loading="lazy"
+                    decoding="async"
+                />
             </Link>
 
-            <div className="p-5 md:p-6 flex flex-col flex-1 relative z-10 bg-white dark:bg-slate-800/80">
-                {/* Brand + Category */}
-                <div className="flex items-center justify-between mb-2">
-                    <span className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">
-                        {product.brand || "ElectroMart"}
-                    </span>
-                    {product.categories?.name && (
-                        <span className="text-[9px] px-2 py-1 bg-slate-100 dark:bg-slate-700/50 text-slate-500 dark:text-slate-300 rounded-full font-bold uppercase tracking-wider">
-                            {product.categories.name}
-                        </span>
+            <div className="flex flex-col flex-1 items-start text-left gap-2 px-2 pb-2">
+                <Link href={`/product/${product.id}`} className="block w-full">
+                    <h3 className="font-semibold text-slate-800 dark:text-slate-100 text-[15px] leading-tight hover:text-primary transition-colors line-clamp-2 h-10">
+                        {product.name}
+                    </h3>
+                </Link>
+
+                <div className="flex flex-col mt-1">
+                    {product.original_price && product.original_price > product.price ? (
+                        <div className="flex flex-col">
+                            <span className="text-slate-400 text-xs line-through">{product.original_price.toLocaleString('en-US', { minimumFractionDigits: 2 })} DA</span>
+                            <span className="text-slate-900 dark:text-white font-bold text-lg">DA {product.price.toLocaleString('en-US', { minimumFractionDigits: 2 })} DZD</span>
+                        </div>
+                    ) : (
+                        <span className="text-slate-900 dark:text-white font-bold text-lg">DA {product.price?.toLocaleString('en-US', { minimumFractionDigits: 2 })} DZD</span>
                     )}
                 </div>
 
-                {/* Name */}
-                <Link href={`/product/${product.id}`} className="font-bold text-slate-900 dark:text-white leading-snug line-clamp-2 hover:text-primary transition-colors text-sm md:text-base flex-1 mb-2">
-                    {product.name}
+                <Link href={`/product/${product.id}`} className="mt-4 w-full">
+                    <button className="w-full py-3 px-6 border-2 border-slate-900 dark:border-white text-slate-900 dark:text-white font-bold rounded-2xl hover:bg-slate-900 hover:text-white dark:hover:bg-white dark:hover:text-slate-900 transition-all duration-300 text-sm">
+                        Choisir des options
+                    </button>
                 </Link>
-
-                {/* Star Rating (Simulated for premium feel) */}
-                <div className="flex items-center gap-1 mb-4">
-                    <div className="flex items-center text-amber-400">
-                        <span className="material-symbols-outlined text-[14px]">star</span>
-                        <span className="material-symbols-outlined text-[14px]">star</span>
-                        <span className="material-symbols-outlined text-[14px]">star</span>
-                        <span className="material-symbols-outlined text-[14px]">star</span>
-                        <span className="material-symbols-outlined text-[14px]">star_half</span>
-                    </div>
-                    <span className="text-[10px] font-bold text-slate-400 ml-1">4.5</span>
-                </div>
-
-                {/* Price + Cart */}
-                <div className="flex items-end justify-between mt-auto pt-4 border-t border-slate-50 dark:border-slate-700/30 flex-wrap gap-3">
-                    <div className="flex flex-col">
-                        {product.original_price && product.original_price > product.price && (
-                            <span className="text-slate-400 text-[11px] font-medium line-through mb-0.5">
-                                {product.original_price.toLocaleString()} DA
-                            </span>
-                        )}
-                        <span className="text-primary font-black text-lg md:text-xl leading-none">
-                            {product.price?.toLocaleString()}<span className="text-xs font-bold ml-1 text-slate-500">DA</span>
-                        </span>
-                    </div>
-
-                    <button
-                        onClick={(e) => onAddToCart(e, product.id)}
-                        disabled={product.stock === 0 || isAdding}
-                        className={`md:hidden lg:flex xl:hidden flex-1 sm:flex-none h-11 px-6 rounded-2xl flex items-center justify-center transition-all duration-300 active:scale-95 group/btn ${product.stock > 0
-                            ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-primary hover:text-white dark:hover:bg-primary dark:hover:text-white shadow-md hover:shadow-xl hover:shadow-primary/30'
-                            : 'bg-slate-100 dark:bg-slate-700 text-slate-300 cursor-not-allowed'
-                            }`}
-                        title={product.stock > 0 ? "Ajouter au panier" : "Rupture de stock"}
-                    >
-                        {isAdding ? (
-                            <span className="material-symbols-outlined text-[20px] animate-spin">refresh</span>
-                        ) : (
-                            <span className="material-symbols-outlined text-[20px] group-hover/btn:scale-110 transition-transform">shopping_cart</span>
-                        )}
-                    </button>
-
-                    {/* Add to Cart text button for larger screens to look more premium */}
-                    <button
-                        onClick={(e) => onAddToCart(e, product.id)}
-                        disabled={product.stock === 0 || isAdding}
-                        className={`hidden md:flex lg:hidden xl:flex h-11 px-4 lg:px-6 rounded-2xl items-center justify-center gap-2 transition-all duration-300 active:scale-95 group/btn ${product.stock > 0
-                            ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-primary hover:text-white dark:hover:bg-primary dark:hover:text-white shadow-md hover:shadow-xl hover:shadow-primary/30'
-                            : 'bg-slate-100 dark:bg-slate-700 text-slate-300 cursor-not-allowed'
-                            }`}
-                    >
-                        {isAdding ? (
-                            <span className="material-symbols-outlined text-[18px] animate-spin">refresh</span>
-                        ) : (
-                            <>
-                                <span className="material-symbols-outlined text-[18px] group-hover/btn:-translate-y-0.5 transition-transform">shopping_cart</span>
-                                <span className="text-xs font-bold uppercase tracking-wider">Ajouter</span>
-                            </>
-                        )}
-                    </button>
-                </div>
             </div>
         </div>
     );
