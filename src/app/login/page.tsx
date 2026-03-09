@@ -6,8 +6,8 @@ import Logo from "@/components/Logo";
 import Link from "next/link";
 
 export default function LoginPage() {
-    const [email, setEmail] = useState("ElectroMart123@gmail.com");
-    const [password, setPassword] = useState("ElectroMart@2026");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -56,7 +56,7 @@ export default function LoginPage() {
                         </div>
                     )}
 
-                    <form onSubmit={handleLogin} className="flex flex-col gap-6">
+                    <form onSubmit={handleLogin} autoComplete="off" className="flex flex-col gap-6">
                         <div className="flex flex-col gap-2">
                             <label className="text-sm font-semibold text-text-main" htmlFor="email">Email</label>
                             <input
@@ -67,6 +67,7 @@ export default function LoginPage() {
                                 className="rounded-lg border-stone-300 focus:ring-primary focus:border-primary w-full py-2.5 px-4"
                                 placeholder="votre@email.com"
                                 required
+                                autoComplete="off"
                             />
                         </div>
 
@@ -80,6 +81,7 @@ export default function LoginPage() {
                                 className="rounded-lg border-stone-300 focus:ring-primary focus:border-primary w-full py-2.5 px-4"
                                 placeholder="••••••••"
                                 required
+                                autoComplete="new-password"
                             />
                         </div>
 
