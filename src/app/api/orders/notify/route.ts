@@ -14,7 +14,7 @@ export async function POST(request: Request) {
             msg += `📞 <b>Téléphone / الهاتف:</b> ${order.customer_phone}\n`;
             msg += `📍 <b>Wilaya / الولاية:</b> ${order.wilaya}\n`;
             msg += `🏙️ <b>Commune / البلدية:</b> ${order.commune}\n`;
-            msg += `🏠 <b>Adresse / العنوان:</b> ${order.address}\n\n`;
+            msg += `🏙️ <b>Commune / البلدية:</b> ${order.commune}\n\n`;
             msg += `📦 <b>Produits commandés:</b>\n`;
 
             order.order_items?.forEach((item: any) => {

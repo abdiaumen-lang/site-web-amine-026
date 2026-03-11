@@ -6,6 +6,7 @@ import Link from "next/link";
 import ProductHeader from "@/components/ProductHeader";
 import ProductFooter from "@/components/ProductFooter";
 import { supabase } from "@/lib/supabase";
+import { useSettings } from "@/context/SettingsContext";
 
 // ─── Product Card Skeleton ────────────────────────────────────────────────────
 function ProductSkeleton() {
@@ -189,8 +190,32 @@ function ProductCatalogContent() {
     const [addingToCart, setAddingToCart] = useState<Record<string, boolean>>({});
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [sortBy, setSortBy] = useState("newest");
+    const [privateCode, setPrivateCode] = useState("");
+    const [isAuthorized, setIsAuthorized] = useState(false);
+    const { settings } = useSettings();
 
+    const PRIVATE_CATEGORY_ID = "e9d11cee-e9cc-4b67-a9b8-87a4c34bb3f1";
     const categoryParam = searchParams?.get("category") || null;
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            const authorized = sessionStorage.getItem(`authorized_${PRIVATE_CATEGORY_ID}`);
+            if (authorized === "true") {
+                setIsAuthorized(true);
+            }
+        }
+    }, [categoryParam]);
+
+    const handleVerifyCode = (e: React.FormEvent) => {
+        e.preventDefault();
+        const correctCode = settings?.private_sale_code || "1234";
+        if (privateCode === correctCode) {
+            setIsAuthorized(true);
+            sessionStorage.setItem(`authorized_${PRIVATE_CATEGORY_ID}`, "true");
+        } else {
+            alert("Code incorrect. Veuillez réessayer.");
+        }
+    };
     const subcategoryParam = searchParams?.get("subcategory") || null;
     const searchQueryParam = searchParams?.get("search") || null;
 
@@ -392,7 +417,32 @@ function ProductCatalogContent() {
                         </div>
 
                         {/* Grid */}
-                        {isLoading ? (
+                        {categoryParam === PRIVATE_CATEGORY_ID && !isAuthorized ? (
+                            <div className="flex flex-col items-center justify-center py-20 px-4 text-center bg-white dark:bg-slate-800/50 rounded-3xl border border-slate-100 dark:border-slate-700/50 shadow-sm mt-4">
+                                <div className="w-20 h-20 mb-6 bg-amber-100 dark:bg-amber-900/30 rounded-full flex items-center justify-center">
+                                    <span className="material-symbols-outlined text-4xl text-amber-600">lock</span>
+                                </div>
+                                <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-3">Accès réservé</h3>
+                                <p className="text-slate-500 max-w-md mb-8 leading-relaxed">Cette catégorie est protégée par un code d'accès. Veuillez saisir le code pour voir les produits.</p>
+
+                                <form onSubmit={handleVerifyCode} className="w-full max-w-xs space-y-4">
+                                    <input
+                                        type="password"
+                                        value={privateCode}
+                                        onChange={(e) => setPrivateCode(e.target.value)}
+                                        placeholder="Entrez le code d'accès"
+                                        className="w-full px-5 py-4 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl text-center font-bold tracking-[0.5em] focus:ring-2 focus:ring-primary focus:border-primary outline-none"
+                                        required
+                                    />
+                                    <button
+                                        type="submit"
+                                        className="w-full py-4 bg-primary text-white rounded-2xl font-bold uppercase tracking-widest hover:bg-primary-dark transition-all shadow-lg shadow-primary/20"
+                                    >
+                                        Vérifier le code
+                                    </button>
+                                </form>
+                            </div>
+                        ) : isLoading ? (
                             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
                                 {Array.from({ length: 8 }).map((_, i) => <ProductSkeleton key={i} />)}
                             </div>

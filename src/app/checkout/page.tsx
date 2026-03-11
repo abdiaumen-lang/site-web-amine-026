@@ -43,8 +43,6 @@ export default function CheckoutPage() {
         customer_phone: "",
         customer_phone_2: "",
         customer_email: "",
-        address: "",
-        postal_code: ""
     });
 
     const { cartItems, isLoading: isLoadingCart, refreshCart } = useCart();
@@ -170,7 +168,6 @@ export default function CheckoutPage() {
                     customer_email: formData.customer_email || null,
                     wilaya: selectedWilaya,
                     commune: selectedCommune.commune_name,
-                    address: formData.address,
                     total_amount: total,
                     shipping_cost: shippingCost,
                     status: 'pending'
@@ -212,7 +209,6 @@ export default function CheckoutPage() {
                         id: order.id,
                         customer_name: formData.customer_name,
                         customer_phone: formData.customer_phone,
-                        address: formData.address,
                         commune: selectedCommune.commune_name,
                         wilaya: selectedWilaya,
                         shipping_cost: shippingCost,
@@ -380,27 +376,7 @@ export default function CheckoutPage() {
                                     )}
                                 </div>
 
-                                <div className="space-y-2">
-                                    <label className="block text-sm font-medium">Code postal</label>
-                                    <input
-                                        className="w-full rounded-lg bg-background-light dark:bg-background-dark border-transparent focus:border-primary focus:ring-primary placeholder:text-text-secondary-light/60 py-2.5 px-4"
-                                        placeholder="ex. 16000"
-                                        type="text"
-                                        value={formData.postal_code}
-                                        onChange={(e) => setFormData({ ...formData, postal_code: e.target.value })}
-                                    />
-                                </div>
-
-                                <div className="space-y-2 md:col-span-2">
-                                    <label className="block text-sm font-medium">Adresse complète</label>
-                                    <textarea
-                                        className="w-full rounded-lg bg-background-light dark:bg-background-dark border-transparent focus:border-primary focus:ring-primary placeholder:text-text-secondary-light/60 resize-none h-20 md:h-24 py-2.5 px-4"
-                                        placeholder="Nom de rue, numéro de bâtiment, étage..."
-                                        required
-                                        value={formData.address}
-                                        onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                                    ></textarea>
-                                </div>
+                                {/* Removed Postal Code and Address fields */}
                             </form>
                         </div>
 

@@ -43,6 +43,7 @@ export default function AdminSettingsPage() {
     const [topBarText, setTopBarText] = useState<string>("");
     const [googleSheetsWebhookUrl, setGoogleSheetsWebhookUrl] = useState<string>("");
     const [facebookPixelId, setFacebookPixelId] = useState<string>("");
+    const [privateSaleCode, setPrivateSaleCode] = useState<string>("");
 
     const [uploading, setUploading] = useState(false);
     const [successMessage, setSuccessMessage] = useState("");
@@ -79,6 +80,7 @@ export default function AdminSettingsPage() {
             setTopBarText(settings.top_bar_text || "");
             setGoogleSheetsWebhookUrl(settings.google_sheets_webhook_url || "");
             setFacebookPixelId(settings.facebook_pixel_id || "");
+            setPrivateSaleCode(settings.private_sale_code || "");
         }
     }, [settings]);
 
@@ -152,6 +154,7 @@ export default function AdminSettingsPage() {
                 top_bar_text: topBarText || null,
                 google_sheets_webhook_url: googleSheetsWebhookUrl || null,
                 facebook_pixel_id: facebookPixelId || null,
+                private_sale_code: privateSaleCode || null,
                 updated_at: new Date().toISOString(),
             };
 
@@ -610,6 +613,33 @@ export default function AdminSettingsPage() {
                                                 className="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 px-4 py-2.5 text-sm focus:ring-blue-500 focus:border-blue-500 font-mono"
                                             />
                                             <p className="text-xs text-slate-500 mt-2">Entrez uniquement votre ID de pixel Facebook (numéro). Le script de suivi sera automatiquement injecté dans tout le site.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Private Sale Configuration Section */}
+                                <div className="pt-8 border-t border-slate-200 dark:border-slate-700">
+                                    <div className="flex items-center justify-between mb-6">
+                                        <div>
+                                            <h2 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                                                <span className="material-symbols-outlined text-amber-600">lock</span>
+                                                Vente Privée (Accès réservé)
+                                            </h2>
+                                            <p className="text-sm text-slate-500 mt-1">Définissez un code d'accès pour la catégorie "Vente Privée".</p>
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-4">
+                                        <div>
+                                            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Code d'accès Vente Privée</label>
+                                            <input
+                                                type="text"
+                                                value={privateSaleCode}
+                                                onChange={(e) => setPrivateSaleCode(e.target.value)}
+                                                placeholder="ex: 1234"
+                                                className="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 px-4 py-2.5 text-sm focus:ring-amber-500 focus:border-amber-500 font-mono"
+                                            />
+                                            <p className="text-xs text-slate-500 mt-2">Ce code sera demandé aux clients souhaitant accéder à la catégorie "Vente Privée".</p>
                                         </div>
                                     </div>
                                 </div>

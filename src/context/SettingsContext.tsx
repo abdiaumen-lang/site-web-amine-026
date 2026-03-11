@@ -33,6 +33,7 @@ export interface WebsiteSettings {
     top_bar_text?: string | null;
     google_sheets_webhook_url?: string | null;
     facebook_pixel_id?: string | null;
+    private_sale_code?: string | null;
     updated_at: string;
 }
 
