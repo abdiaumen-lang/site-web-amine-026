@@ -10,9 +10,11 @@ export async function POST(request: Request) {
         // 1. Telegram Sync
         if (telegramBotToken && telegramChatId) {
             let msg = `🛍️ <b>Nouvelle Commande #EM-${order.id.slice(0, 6).toUpperCase()}</b>\n\n`;
-            msg += `👤 <b>Client:</b> ${order.customer_name}\n`;
-            msg += `📞 <b>Téléphone:</b> ${order.customer_phone}\n`;
-            msg += `📍 <b>Adresse:</b> ${order.address}, ${order.commune}, ${order.wilaya}\n\n`;
+            msg += `👤 <b>Client / الزبون:</b> ${order.customer_name}\n`;
+            msg += `📞 <b>Téléphone / الهاتف:</b> ${order.customer_phone}\n`;
+            msg += `📍 <b>Wilaya / الولاية:</b> ${order.wilaya}\n`;
+            msg += `🏙️ <b>Commune / البلدية:</b> ${order.commune}\n`;
+            msg += `🏠 <b>Adresse / العنوان:</b> ${order.address}\n\n`;
             msg += `📦 <b>Produits commandés:</b>\n`;
 
             order.order_items?.forEach((item: any) => {
