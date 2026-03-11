@@ -5,6 +5,7 @@ import "./globals.css";
 import { SettingsProvider } from "@/context/SettingsContext";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import ThemeInjector from "@/components/ThemeInjector";
+import FacebookPixel from "@/components/FacebookPixel";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -58,6 +59,7 @@ export default function RootLayout({
       >
         <SettingsProvider>
           <ThemeInjector />
+          <FacebookPixel />
           {children}
           <WhatsAppButton />
         </SettingsProvider>

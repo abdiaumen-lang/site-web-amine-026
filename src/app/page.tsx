@@ -71,10 +71,10 @@ export default async function Home() {
             {categories && categories.map((category) => (
               <Link
                 key={category.id}
-                className="group flex flex-col gap-3 p-4 rounded-xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300"
+                className="group flex flex-col gap-3 p-4 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300"
                 href={`/product?category=${category.id}`}
               >
-                <div className="aspect-square rounded-lg bg-slate-50 dark:bg-slate-700 overflow-hidden relative">
+                <div className="aspect-square bg-slate-50 dark:bg-slate-700 overflow-hidden relative">
                   {category.image ? (
                     <Image
                       width={400}
@@ -121,8 +121,8 @@ export default async function Home() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {featuredProducts && featuredProducts.map((product) => (
-              <div key={product.id} className="group flex flex-col h-full bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl p-1.5 transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.05)] dark:hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
-                <Link href={`/product/${product.id}`} className="relative aspect-[4/5] bg-white rounded-2xl overflow-hidden mb-4 block group">
+              <div key={product.id} className="group flex flex-col h-full bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-1.5 transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.05)] dark:hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
+                <Link href={`/product/${product.id}`} className="relative aspect-[4/5] bg-white overflow-hidden mb-4 block group">
                   {product.discount_price && (
                     <span className="absolute top-4 left-4 bg-primary text-white text-[10px] font-black px-2 py-1 rounded-sm uppercase tracking-widest z-10 shadow-sm">
                       -{Math.round(((product.price - product.discount_price) / product.price) * 100)}%
@@ -154,7 +154,7 @@ export default async function Home() {
                   </div>
 
                   <Link href={`/product/${product.id}`} className="mt-4 w-full">
-                    <button className="w-full py-3 px-6 border-2 border-slate-900 dark:border-white text-slate-900 dark:text-white font-bold rounded-2xl hover:bg-slate-900 hover:text-white dark:hover:bg-white dark:hover:text-slate-900 transition-all duration-300 text-sm">
+                    <button className="w-full py-3 px-6 border-2 border-slate-900 dark:border-white text-slate-900 dark:text-white font-bold rounded-none hover:bg-slate-900 hover:text-white dark:hover:bg-white dark:hover:text-slate-900 transition-all duration-300 text-sm">
                       Voir le produits
                     </button>
                   </Link>
