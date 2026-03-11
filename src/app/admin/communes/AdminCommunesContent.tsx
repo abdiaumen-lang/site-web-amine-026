@@ -118,6 +118,49 @@ export default function AdminCommunesContent() {
         }
     };
 
+    const deleteCommune = async (id: string) => {
+        if (!window.confirm("Êtes-vous sûr de vouloir supprimer cette commune ?")) return;
+
+        // Optimistic update
+        setCommunes(prev => prev.filter(c => c.id !== id));
+
+        const { error } = await supabase
+            .from('communes')
+            .delete()
+            .eq('id', id);
+
+        if (error) {
+            console.error("Error deleting commune:", error);
+            alert("Erreur lors de la suppression.");
+            // Refresh to restore state on error
+            if (selectedWilaya) fetchCommunes(selectedWilaya);
+        }
+    };
+
+    const handleAddCommune = async () => {
+        const name = window.prompt("Nom de la nouvelle commune :");
+        if (!name) return;
+
+        const { data, error } = await supabase
+            .from('communes')
+            .insert({
+                wilaya_name: selectedWilaya,
+                commune_name: name,
+                shipping_cost: 500,
+                is_active: true
+            })
+            .select()
+            .single();
+
+        if (error) {
+            console.error("Error adding commune:", error);
+            alert("Erreur lors de l'ajout.");
+        } else if (data) {
+            setCommunes(prev => [...prev, data as Commune].sort((a, b) => a.commune_name.localeCompare(b.commune_name)));
+        }
+    };
+
+
     const activeCount = communes.filter(c => c.is_active).length;
     const inactiveCount = communes.length - activeCount;
 
@@ -213,7 +256,10 @@ export default function AdminCommunesContent() {
                                     <h2 className="text-2xl font-bold text-text-primary-light">Gestion des communes</h2>
                                     <p className="text-text-secondary-light text-sm mt-1">Gérer les zones de livraison et les prix pour {selectedWilaya}.</p>
                                 </div>
-                                <button className="bg-primary hover:bg-primary-dark text-white px-5 py-2.5 rounded-lg text-sm font-bold flex items-center gap-2 shadow-sm shadow-primary/20 transition-all shrink-0">
+                                <button
+                                    onClick={handleAddCommune}
+                                    className="bg-primary hover:bg-primary-dark text-white px-5 py-2.5 rounded-lg text-sm font-bold flex items-center gap-2 shadow-sm shadow-primary/20 transition-all shrink-0"
+                                >
                                     <span className="material-symbols-outlined text-[18px]">add</span>
                                     Ajouter une nouvelle commune
                                 </button>
@@ -321,21 +367,27 @@ export default function AdminCommunesContent() {
                                                             </div>
                                                         </td>
                                                         <td className="p-4 pr-6 text-right">
-                                                            {editingId === commune.id ? (
-                                                                <div className="flex items-center justify-end gap-2">
-                                                                    <button onClick={() => saveShippingCost(commune.id)} className="bg-primary hover:bg-primary-dark text-white px-3 py-1.5 rounded text-xs font-bold transition-colors">
-                                                                        Enregistrer
-                                                                    </button>
-                                                                    <button onClick={() => setEditingId(null)} className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-3 py-1.5 rounded text-xs font-bold transition-colors">
-                                                                        Annuler
-                                                                    </button>
-                                                                </div>
-                                                            ) : (
-                                                                <button onClick={() => startEditing(commune)} className="text-primary hover:text-primary-dark p-2 rounded-lg hover:bg-primary/5 transition-colors flex items-center gap-1.5 ml-auto font-medium text-sm">
-                                                                    <span className="material-symbols-outlined text-[18px]">edit</span>
-                                                                    <span className="hidden group-hover:block transition-all">Modifier le prix</span>
-                                                                </button>
-                                                            )}
+                                                            <div className="flex items-center justify-end gap-2">
+                                                                {editingId === commune.id ? (
+                                                                    <>
+                                                                        <button onClick={() => saveShippingCost(commune.id)} className="bg-primary hover:bg-primary-dark text-white px-3 py-1.5 rounded text-xs font-bold transition-colors">
+                                                                            Enregistrer
+                                                                        </button>
+                                                                        <button onClick={() => setEditingId(null)} className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-3 py-1.5 rounded text-xs font-bold transition-colors">
+                                                                            Annuler
+                                                                        </button>
+                                                                    </>
+                                                                ) : (
+                                                                    <>
+                                                                        <button onClick={() => startEditing(commune)} className="text-primary hover:text-primary-dark p-2 rounded-lg hover:bg-primary/5 transition-colors flex items-center gap-1.5 font-medium text-sm">
+                                                                            <span className="material-symbols-outlined text-[18px]">edit</span>
+                                                                        </button>
+                                                                        <button onClick={() => deleteCommune(commune.id)} className="text-red-500 hover:text-red-700 p-2 rounded-lg hover:bg-red-50 transition-colors flex items-center gap-1.5 font-medium text-sm">
+                                                                            <span className="material-symbols-outlined text-[18px]">delete</span>
+                                                                        </button>
+                                                                    </>
+                                                                )}
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 ))

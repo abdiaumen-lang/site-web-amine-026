@@ -13,7 +13,6 @@ export async function POST(request: Request) {
             msg += `👤 <b>Client / الزبون:</b> ${order.customer_name}\n`;
             msg += `📞 <b>Téléphone / الهاتف:</b> ${order.customer_phone}\n`;
             msg += `📍 <b>Wilaya / الولاية:</b> ${order.wilaya}\n`;
-            msg += `🏙️ <b>Commune / البلدية:</b> ${order.commune}\n`;
             msg += `🏙️ <b>Commune / البلدية:</b> ${order.commune}\n\n`;
             msg += `📦 <b>Produits commandés:</b>\n`;
 

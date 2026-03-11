@@ -25,7 +25,6 @@ interface Order {
     customer_email: string | null;
     wilaya: string;
     commune: string;
-    address: string;
     status: 'pending' | 'confirmed' | 'delivered' | 'cancelled';
     total_amount: number;
     shipping_cost: number;
@@ -455,9 +454,8 @@ export default function AdminSalesPage() {
                                             <span className="text-sm font-medium text-stone-700">{selectedOrder.customer_email || 'Non renseigné'}</span>
                                         </div>
                                         <div className="flex flex-col mt-2 p-3 rounded-xl bg-stone-50 border border-stone-100">
-                                            <span className="text-[10px] font-bold text-stone-400 uppercase tracking-tighter mb-1">Adresse de livraison</span>
+                                            <span className="text-[10px] font-bold text-stone-400 uppercase tracking-tighter mb-1">Localisation</span>
                                             <p className="text-sm font-medium text-stone-800 leading-relaxed">
-                                                {selectedOrder.address}, <br />
                                                 <span className="font-black text-stone-900">{selectedOrder.commune}, {selectedOrder.wilaya}</span>
                                             </p>
                                         </div>
