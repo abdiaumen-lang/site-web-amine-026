@@ -20,6 +20,7 @@ type Category = {
     link: string;
     image: string;
     icon: string;
+    subtitle?: string;
     order_index?: number;
 };
 
@@ -36,6 +37,7 @@ export default function CategoriesAdminPage() {
     const [showCatModal, setShowCatModal] = useState(false);
     const [editingCat, setEditingCat] = useState<Category | null>(null);
     const [catName, setCatName] = useState("");
+    const [catSubtitle, setCatSubtitle] = useState("");
     const [catIcon, setCatIcon] = useState("");
     const [catImage, setCatImage] = useState("");
     const [isUploadingImage, setIsUploadingImage] = useState(false);
@@ -128,7 +130,8 @@ export default function CategoriesAdminPage() {
                         name: catName,
                         slug: catName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, ''),
                         icon: catIcon,
-                        image: catImage
+                        image: catImage,
+                        subtitle: catSubtitle
                     })
                     .eq("id", editingCat.id);
                 if (error) throw error;
@@ -139,13 +142,15 @@ export default function CategoriesAdminPage() {
                         name: catName,
                         slug: catName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, ''),
                         icon: catIcon,
-                        image: catImage
+                        image: catImage,
+                        subtitle: catSubtitle
                     }]);
                 if (error) throw error;
             }
             setShowCatModal(false);
             setEditingCat(null);
             setCatName("");
+            setCatSubtitle("");
             setCatIcon("");
             setCatImage("");
             fetchCategories();
@@ -202,6 +207,7 @@ export default function CategoriesAdminPage() {
     const openCreateCatModal = () => {
         setEditingCat(null);
         setCatName("");
+        setCatSubtitle("");
         setCatIcon("category");
         setCatImage("");
         setShowCatModal(true);
@@ -211,6 +217,7 @@ export default function CategoriesAdminPage() {
         e.stopPropagation();
         setEditingCat(cat);
         setCatName(cat.name);
+        setCatSubtitle(cat.subtitle || "");
         setCatIcon(cat.icon || "");
         setCatImage(cat.image || "");
         setShowCatModal(true);
@@ -324,7 +331,10 @@ export default function CategoriesAdminPage() {
                                             ) : (
                                                 <span className="material-symbols-outlined text-[20px] text-slate-300">image</span>
                                             )}
-                                            <span className="text-sm">{cat.name}</span>
+                                            <div className="flex flex-col">
+                                                <span className="text-sm">{cat.name}</span>
+                                                {cat.subtitle && <span className="text-[10px] opacity-60 font-normal">{cat.subtitle}</span>}
+                                            </div>
                                         </div>
                                         <div className="flex items-center gap-1 transition-opacity">
                                             <button onClick={(e) => handleMoveCategory(cat as any, index, 'up', e)} disabled={index === 0 || isLoading} className="p-1.5 text-slate-400 hover:text-primary transition-colors rounded-lg hover:bg-primary/10 disabled:opacity-30 disabled:hover:bg-transparent">
@@ -472,6 +482,17 @@ export default function CategoriesAdminPage() {
                                     onChange={(e) => setCatName(e.target.value)}
                                     className="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-primary focus:border-primary p-2.5"
                                     placeholder="ex: Électroménager"
+                                />
+                            </div>
+
+                            <div className="mb-4">
+                                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Sous-titre (ex: Multi-portes & plus)</label>
+                                <input
+                                    type="text"
+                                    value={catSubtitle}
+                                    onChange={(e) => setCatSubtitle(e.target.value)}
+                                    className="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-primary focus:border-primary p-2.5"
+                                    placeholder="ex: Multi-portes & plus"
                                 />
                             </div>
 

@@ -7,11 +7,18 @@ import AnimatedBrandsMarquee from "@/components/AnimatedBrandsMarquee";
 
 export default async function Home() {
   // Select only columns needed for the product card — avoids sending `landing_content`, `specifications`, etc.
+  // Select only columns needed for the product card
   const { data: featuredProducts } = await supabase
     .from("products")
     .select("id, name, price, original_price, discount_price, image, images, stock")
     .order("created_at", { ascending: false })
     .limit(4);
+
+  const { data: categories } = await supabase
+    .from("categories")
+    .select("*")
+    .order("order_index", { ascending: true })
+    .limit(12);
   return (
     <div className="min-h-screen flex flex-col font-sans">
       <HomeHeader />
@@ -61,60 +68,39 @@ export default async function Home() {
             </Link>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            <Link className="group flex flex-col gap-3 p-4 rounded-xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300" href="/product">
-              <div className="aspect-square rounded-lg bg-slate-50 dark:bg-slate-700 overflow-hidden relative">
-                <Image width={400} height={400} alt="Modern silver refrigerator" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1eyjmjBNUR7OtEf2l3L9gBaS66NIAptyTt4UptXhN46-Fy8SrkwReD_roYNjDFk95wNXgpqjaVck5hZF4k_cR5HlIWCHpRTlavxK9rMAVaON0NAqjdd32wh4ycK2DGWzNuXHiw1LS5nnEe9nQQFvv_zCg5aQzo2D8vz-Fw6NNpqO4ZVh4T670C0we9HY_gaFslAgjBAuDQoicCpS7ivekoFht_Movc0R_PMeqqI2Pq3SQNEWiG7TbtzVorPOlsEGeUtd1Rh1sr28" />
-              </div>
-              <div className="text-center">
-                <h3 className="text-slate-900 dark:text-white font-bold text-sm group-hover:text-primary transition-colors">Réfrigérateurs</h3>
-                <p className="text-slate-500 dark:text-slate-400 text-xs mt-1">Multi-portes & plus</p>
-              </div>
-            </Link>
-            <Link className="group flex flex-col gap-3 p-4 rounded-xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300" href="/product">
-              <div className="aspect-square rounded-lg bg-slate-50 dark:bg-slate-700 overflow-hidden relative">
-                <Image width={400} height={400} alt="Front load washing machine" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCR6DEY1xxwvQgZX86JJfFn1lLOdI8nopIC20Rs_XMF1nCeyeeIdMzV7ReTgKeI4lCV9ERLAsricVlBIY4mfY7KPHQpJtDcpA97FlbOQyzUTo96DLUnGTvbi9YcPp6EAgVcWRVg79RQXmohUBSqLdXsWudryeJYzJd-BjPs_NZbcevFexG8W4mbIv3dB6g39BTYiqAgaVMeY84xDx5J20Zcrd5Kte-xZcwquaXUltbo0ELbYCB4DkXB9iyh-UDMkw4ywlQ4x8mqQs" />
-              </div>
-              <div className="text-center">
-                <h3 className="text-slate-900 dark:text-white font-bold text-sm group-hover:text-primary transition-colors">Lave-linge</h3>
-                <p className="text-slate-500 dark:text-slate-400 text-xs mt-1">Hublot & Top</p>
-              </div>
-            </Link>
-            <Link className="group flex flex-col gap-3 p-4 rounded-xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300" href="/product">
-              <div className="aspect-square rounded-lg bg-slate-50 dark:bg-slate-700 overflow-hidden relative">
-                <Image width={400} height={400} alt="Smart 4K TV on a stand" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9xB7oHUTKt2g6ceJDU8W4eHNVVc-w8vy0c8kOKt97jb8Y97V_a7gik4tKbS39w_lId8HqeZ6Rl-ReyBpYHIucZGkGXxet_lXn2j0Ac1gURQwjEzzk1umyHFKevKy4gL5NGPpyZhSeX0o4tkIZH_N_84bpqAb9avhoMAv_vdOGtryIfzl8gfTjo0Tg79bZzakCCE1MFaLKYn00S7Jrd81Q45v0XULJMxCqkjVVi5BW3Bg3VnSJ9H6JP0RHrwZXO8P08L27cTqIO70" />
-              </div>
-              <div className="text-center">
-                <h3 className="text-slate-900 dark:text-white font-bold text-sm group-hover:text-primary transition-colors">Téléviseurs</h3>
-                <p className="text-slate-500 dark:text-slate-400 text-xs mt-1">4K, OLED & QLED</p>
-              </div>
-            </Link>
-            <Link className="group flex flex-col gap-3 p-4 rounded-xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300" href="/product">
-              <div className="aspect-square rounded-lg bg-slate-50 dark:bg-slate-700 overflow-hidden relative">
-                <Image width={400} height={400} alt="Wall mounted air conditioner" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7SsEE1e1dmVF9QNgWRO-Hx3augVU1e6XexdHLe68asCnihkV0f7i07ewiQpxkVIfHDpcKT1nbpo6aF4v4aheaLPTNAkrgolsBwc1ro1c18aumOzedgn61mwyrYbbpEdIdE5EM4E9Bu13qTsfOCRKdtuEt57-__h52RMuR-72mMH0dz0vyEUVJjugZ9UrKPBtELAZ-isNEidmB7tJ5tghBYXbbq2WZx4QuW09TKTpvtq2lQWbmLTM4k7JGzGd8w5sQ5HQyXJVwvow" />
-              </div>
-              <div className="text-center">
-                <h3 className="text-slate-900 dark:text-white font-bold text-sm group-hover:text-primary transition-colors">Climatiseurs</h3>
-                <p className="text-slate-500 dark:text-slate-400 text-xs mt-1">Split & Mobile</p>
-              </div>
-            </Link>
-            <Link className="group flex flex-col gap-3 p-4 rounded-xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300" href="/product">
-              <div className="aspect-square rounded-lg bg-slate-50 dark:bg-slate-700 overflow-hidden relative">
-                <Image width={400} height={400} alt="Modern kitchen stove and oven" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCp1M4lDXYO_MWFKOHIGVc5pxko9Ol-7ujIr7xhWzmtVuVLhW7XHEyn6Rq-6gZ5z6R1KaLbkdj81HWjt3Pn133Nf0s1tS-Wdy3DY--55JFqzCVI6RbH2LpRjhuabKxlVGZkfjktAFZFL2MJtdj5ptW1nYwoYNeTOEhp1y2XkyksUo1g9TpyrZFsUOme3zOXpjeEOyxcKoG2IS_9ilPHF6OarB_cgPZ6BOeTIZZZaMuJEtj5rPeGdRPQKl51ofeOA5IxPWkKHs6R5O4" />
-              </div>
-              <div className="text-center">
-                <h3 className="text-slate-900 dark:text-white font-bold text-sm group-hover:text-primary transition-colors">Cuisinières</h3>
-                <p className="text-slate-500 dark:text-slate-400 text-xs mt-1">Gaz & Électrique</p>
-              </div>
-            </Link>
-            <Link className="group flex flex-col gap-3 p-4 rounded-xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300" href="/product">
-              <div className="aspect-square rounded-lg bg-slate-50 dark:bg-slate-700 overflow-hidden relative">
-                <Image width={400} height={400} alt="Microwave oven on counter" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTm9tdFwGtWUiy4PI0kek5KdUm2GqommwkSmXptnJTfkbEYoioMGdQCCzXmwBdHyD5UemFaRcW-BBcTR8R0TvU3WeWwKqnKaXBiYjMKRnxqSEjWdimpO04PLXojwIKNSkyzQGcR4HtHCcrcWxMftvVq-EDe2N9zPJrobELJ7tEotOO92l8_4H0-HMTiX8aK_6hTM2tXjo0kcqMweo1k5LXtO3qYfgXLFdxn7y3ilHy1YxMYFeZ8pyXNyJj4iqJAPpV5PJTC6E7mRk" />
-              </div>
-              <div className="text-center">
-                <h3 className="text-slate-900 dark:text-white font-bold text-sm group-hover:text-primary transition-colors">Petit Électroménager</h3>
-                <p className="text-slate-500 dark:text-slate-400 text-xs mt-1">Micro-ondes & Mixeurs</p>
-              </div>
-            </Link>
+            {categories && categories.map((category) => (
+              <Link
+                key={category.id}
+                className="group flex flex-col gap-3 p-4 rounded-xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300"
+                href={`/product?category=${category.id}`}
+              >
+                <div className="aspect-square rounded-lg bg-slate-50 dark:bg-slate-700 overflow-hidden relative">
+                  {category.image ? (
+                    <Image
+                      width={400}
+                      height={400}
+                      alt={category.name}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      src={category.image}
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-slate-100 dark:bg-slate-700">
+                      <span className="material-symbols-outlined text-slate-400 text-4xl group-hover:text-primary transition-colors">
+                        {category.icon || "category"}
+                      </span>
+                    </div>
+                  )}
+                </div>
+                <div className="text-center">
+                  <h3 className="text-slate-900 dark:text-white font-bold text-sm group-hover:text-primary transition-colors">
+                    {category.name}
+                  </h3>
+                  {category.subtitle && (
+                    <p className="text-slate-500 dark:text-slate-400 text-xs mt-1">{category.subtitle}</p>
+                  )}
+                </div>
+              </Link>
+            ))}
           </div>
         </section>
 
