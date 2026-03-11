@@ -31,6 +31,7 @@ export interface WebsiteSettings {
     theme_font_family?: string | null;
     menu_bg_color?: string | null;
     top_bar_text?: string | null;
+    google_sheets_webhook_url?: string | null;
     updated_at: string;
 }
 

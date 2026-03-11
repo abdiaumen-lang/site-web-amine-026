@@ -230,7 +230,8 @@ export default function CheckoutPage() {
                         body: JSON.stringify({
                             order: fullOrderForTelegram,
                             telegramBotToken: settings.telegram_bot_token,
-                            telegramChatId: settings.telegram_chat_id
+                            telegramChatId: settings.telegram_chat_id,
+                            googleSheetsWebhookUrl: settings.google_sheets_webhook_url
                         })
                     }).catch(err => console.error("Telegram Webhook Error:", err));
                 } catch (telegramErr) {
