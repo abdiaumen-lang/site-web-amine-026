@@ -419,26 +419,34 @@ function ProductCatalogContent() {
                         {/* Grid */}
                         {categoryParam === PRIVATE_CATEGORY_ID && !isAuthorized ? (
                             <div className="flex flex-col items-center justify-center py-20 px-4 text-center bg-white dark:bg-slate-800/50 rounded-3xl border border-slate-100 dark:border-slate-700/50 shadow-sm mt-4">
-                                <div className="w-20 h-20 mb-6 bg-amber-100 dark:bg-amber-900/30 rounded-full flex items-center justify-center">
-                                    <span className="material-symbols-outlined text-4xl text-amber-600">lock</span>
+                                <div className="w-40 h-40 mb-6 bg-amber-50 dark:bg-amber-900/20 rounded-full flex items-center justify-center overflow-hidden border-4 border-white dark:border-slate-700 shadow-lg">
+                                    {settings?.private_sale_image_url ? (
+                                        <img src={settings.private_sale_image_url} alt="Private Sale" className="w-full h-full object-cover" />
+                                    ) : (
+                                        <span className="material-symbols-outlined text-5xl text-amber-600">lock</span>
+                                    )}
                                 </div>
-                                <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-3">Accès réservé</h3>
-                                <p className="text-slate-500 max-w-md mb-8 leading-relaxed">Cette catégorie est protégée par un code d'accès. Veuillez saisir le code pour voir les produits.</p>
+                                <h3 className="text-3xl font-black text-slate-900 dark:text-white mb-3">
+                                    {settings?.private_sale_title || "Accès réservé"}
+                                </h3>
+                                <p className="text-slate-500 dark:text-slate-400 max-w-md mb-8 leading-relaxed text-lg">
+                                    {settings?.private_sale_description || "Cette catégorie est protégée par un code d'accès. Veuillez saisir le code pour voir les produits."}
+                                </p>
 
                                 <form onSubmit={handleVerifyCode} className="w-full max-w-xs space-y-4">
                                     <input
                                         type="password"
                                         value={privateCode}
                                         onChange={(e) => setPrivateCode(e.target.value)}
-                                        placeholder="Entrez le code d'accès"
-                                        className="w-full px-5 py-4 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl text-center font-bold tracking-[0.5em] focus:ring-2 focus:ring-primary focus:border-primary outline-none"
+                                        placeholder={settings?.private_sale_placeholder || "Entrez le code d'accès"}
+                                        className="w-full px-5 py-4 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl text-center font-bold tracking-[0.2em] focus:ring-2 focus:ring-primary focus:border-primary outline-none"
                                         required
                                     />
                                     <button
                                         type="submit"
                                         className="w-full py-4 bg-primary text-white rounded-2xl font-bold uppercase tracking-widest hover:bg-primary-dark transition-all shadow-lg shadow-primary/20"
                                     >
-                                        Vérifier le code
+                                        {settings?.private_sale_button_text || "Vérifier le code"}
                                     </button>
                                 </form>
                             </div>

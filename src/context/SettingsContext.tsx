@@ -34,6 +34,11 @@ export interface WebsiteSettings {
     google_sheets_webhook_url?: string | null;
     facebook_pixel_id?: string | null;
     private_sale_code?: string | null;
+    private_sale_image_url?: string | null;
+    private_sale_title?: string | null;
+    private_sale_description?: string;
+    private_sale_button_text?: string;
+    private_sale_placeholder?: string;
     updated_at: string;
 }
 
@@ -119,3 +124,4 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 export function useSettings() {
     return useContext(SettingsContext);
 }
+

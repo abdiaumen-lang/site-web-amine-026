@@ -44,8 +44,14 @@ export default function AdminSettingsPage() {
     const [googleSheetsWebhookUrl, setGoogleSheetsWebhookUrl] = useState<string>("");
     const [facebookPixelId, setFacebookPixelId] = useState<string>("");
     const [privateSaleCode, setPrivateSaleCode] = useState<string>("");
+    const [privateSaleImageUrl, setPrivateSaleImageUrl] = useState<string>("");
+    const [privateSaleTitle, setPrivateSaleTitle] = useState<string>("");
+    const [privateSaleDescription, setPrivateSaleDescription] = useState<string>("");
+    const [privateSaleButtonText, setPrivateSaleButtonText] = useState<string>("");
+    const [privateSalePlaceholder, setPrivateSalePlaceholder] = useState<string>("");
 
     const [uploading, setUploading] = useState(false);
+    const [isUploadingPrivateSaleImage, setIsUploadingPrivateSaleImage] = useState(false);
     const [successMessage, setSuccessMessage] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
 
@@ -81,6 +87,11 @@ export default function AdminSettingsPage() {
             setGoogleSheetsWebhookUrl(settings.google_sheets_webhook_url || "");
             setFacebookPixelId(settings.facebook_pixel_id || "");
             setPrivateSaleCode(settings.private_sale_code || "");
+            setPrivateSaleImageUrl(settings.private_sale_image_url || "");
+            setPrivateSaleTitle(settings.private_sale_title || "");
+            setPrivateSaleDescription(settings.private_sale_description || "");
+            setPrivateSaleButtonText(settings.private_sale_button_text || "");
+            setPrivateSalePlaceholder(settings.private_sale_placeholder || "");
         }
     }, [settings]);
 
@@ -155,6 +166,11 @@ export default function AdminSettingsPage() {
                 google_sheets_webhook_url: googleSheetsWebhookUrl || null,
                 facebook_pixel_id: facebookPixelId || null,
                 private_sale_code: privateSaleCode || null,
+                private_sale_image_url: privateSaleImageUrl || null,
+                private_sale_title: privateSaleTitle || null,
+                private_sale_description: privateSaleDescription || null,
+                private_sale_button_text: privateSaleButtonText || null,
+                private_sale_placeholder: privateSalePlaceholder || null,
                 updated_at: new Date().toISOString(),
             };
 
@@ -629,7 +645,7 @@ export default function AdminSettingsPage() {
                                         </div>
                                     </div>
 
-                                    <div className="space-y-4">
+                                    <div className="space-y-6">
                                         <div>
                                             <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Code d'accès Vente Privée</label>
                                             <input
@@ -640,6 +656,100 @@ export default function AdminSettingsPage() {
                                                 className="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 px-4 py-2.5 text-sm focus:ring-amber-500 focus:border-amber-500 font-mono"
                                             />
                                             <p className="text-xs text-slate-500 mt-2">Ce code sera demandé aux clients souhaitant accéder à la catégorie "Vente Privée".</p>
+                                        </div>
+
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-slate-100 dark:border-slate-700/50">
+                                            <div className="space-y-4">
+                                                <div>
+                                                    <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Titre de l'écran d'accès</label>
+                                                    <input
+                                                        type="text"
+                                                        value={privateSaleTitle}
+                                                        onChange={(e) => setPrivateSaleTitle(e.target.value)}
+                                                        placeholder="ex: Accès réservé"
+                                                        className="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 px-4 py-2.5 text-sm focus:ring-amber-500 focus:border-amber-500"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Description / Message</label>
+                                                    <textarea
+                                                        value={privateSaleDescription}
+                                                        onChange={(e) => setPrivateSaleDescription(e.target.value)}
+                                                        placeholder="Message à afficher aux clients..."
+                                                        rows={3}
+                                                        className="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 px-4 py-2.5 text-sm focus:ring-amber-500 focus:border-amber-500 resize-none"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Texte du bouton</label>
+                                                    <input
+                                                        type="text"
+                                                        value={privateSaleButtonText}
+                                                        onChange={(e) => setPrivateSaleButtonText(e.target.value)}
+                                                        placeholder="ex: Vérifier le code"
+                                                        className="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 px-4 py-2.5 text-sm focus:ring-amber-500 focus:border-amber-500"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Texte d&apos;aide (Placeholder)</label>
+                                                    <input
+                                                        type="text"
+                                                        value={privateSalePlaceholder}
+                                                        onChange={(e) => setPrivateSalePlaceholder(e.target.value)}
+                                                        placeholder="ex: Entrez le code d'accès"
+                                                        className="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 px-4 py-2.5 text-sm focus:ring-amber-500 focus:border-amber-500"
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <div className="space-y-4">
+                                                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Image / Icône personnalisée</label>
+                                                <div className="flex items-center gap-4">
+                                                    <div className="size-24 shrink-0 rounded-2xl bg-amber-50 dark:bg-amber-900/20 border-2 border-dashed border-amber-200 dark:border-amber-800 flex items-center justify-center overflow-hidden relative group">
+                                                        {privateSaleImageUrl ? (
+                                                            <>
+                                                                <img src={privateSaleImageUrl} alt="Private Sale" className="w-full h-full object-cover" />
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => setPrivateSaleImageUrl("")}
+                                                                    className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                                                                >
+                                                                    <span className="material-symbols-outlined text-white">delete</span>
+                                                                </button>
+                                                            </>
+                                                        ) : (
+                                                            <span className="material-symbols-outlined text-amber-500 text-3xl">lock</span>
+                                                        )}
+                                                    </div>
+                                                    <div className="flex-1">
+                                                        <input
+                                                            type="file"
+                                                            accept="image/*"
+                                                            disabled={isUploadingPrivateSaleImage}
+                                                            onChange={async (e) => {
+                                                                const file = e.target.files?.[0];
+                                                                if (!file) return;
+                                                                setIsUploadingPrivateSaleImage(true);
+                                                                try {
+                                                                    const fileExt = file.name.split('.').pop();
+                                                                    const filePath = `private_sale/custom_icon_${Date.now()}.${fileExt}`;
+                                                                    const { error: uploadError } = await supabase.storage.from("landing_media").upload(filePath, file, { cacheControl: '3600', upsert: false });
+                                                                    if (uploadError) throw uploadError;
+                                                                    const { data } = supabase.storage.from("landing_media").getPublicUrl(filePath);
+                                                                    setPrivateSaleImageUrl(data.publicUrl);
+                                                                } catch (err: any) {
+                                                                    setErrorMessage(err.message);
+                                                                } finally {
+                                                                    setIsUploadingPrivateSaleImage(false);
+                                                                }
+                                                            }}
+                                                            className="block w-full text-sm text-slate-500 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-amber-50 file:text-amber-700 hover:file:bg-amber-100 disabled:opacity-50"
+                                                        />
+                                                        {isUploadingPrivateSaleImage && <p className="text-xs text-amber-600 mt-1 animate-pulse">Téléchargement...</p>}
+                                                        <p className="text-[10px] text-slate-500 mt-2">Format suggéré : Carré (512x512px). Laissez vide pour utiliser l&apos;icône par défaut.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
