@@ -105,6 +105,11 @@ export default function AdminSettingsPage() {
             }
 
             const file = event.target.files[0];
+
+            if (file.size > 20 * 1024 * 1024) {
+                throw new Error("L'image est trop volumineuse (max 20MB).");
+            }
+
             const fileExt = file.name.split('.').pop();
             const fileName = `logo-${Math.random()}.${fileExt}`;
             const filePath = `${fileName}`;
@@ -731,6 +736,9 @@ export default function AdminSettingsPage() {
                                                                 if (!file) return;
                                                                 setIsUploadingPrivateSaleImage(true);
                                                                 try {
+                                                                    if (file.size > 20 * 1024 * 1024) {
+                                                                        throw new Error("L'image est trop volumineuse (max 20MB).");
+                                                                    }
                                                                     const fileExt = file.name.split('.').pop();
                                                                     const filePath = `private_sale/custom_icon_${Date.now()}.${fileExt}`;
                                                                     const { error: uploadError } = await supabase.storage.from("landing_media").upload(filePath, file, { cacheControl: '3600', upsert: false });
@@ -866,6 +874,9 @@ export default function AdminSettingsPage() {
                                                                     if (!file) return;
                                                                     setIsUploadingStoreImage(true);
                                                                     try {
+                                                                        if (file.size > 20 * 1024 * 1024) {
+                                                                            throw new Error("L'image est trop volumineuse (max 20MB).");
+                                                                        }
                                                                         const fileExt = file.name.split('.').pop();
                                                                         const filePath = `store/store_photo_${Date.now()}.${fileExt}`;
                                                                         const { error: uploadError } = await supabase.storage.from("landing_media").upload(filePath, file, { cacheControl: '3600', upsert: false });

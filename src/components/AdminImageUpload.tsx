@@ -31,8 +31,8 @@ export default function AdminImageUpload({
         setIsUploading(true);
 
         // Validation
-        if (file.size > 10 * 1024 * 1024) { // 10MB limit
-            setError("L'image est trop volumineuse (max 10MB).");
+        if (file.size > 20 * 1024 * 1024) { // 20MB limit
+            setError("L'image est trop volumineuse (max 20MB).");
             setIsUploading(false);
             return;
         }

@@ -92,7 +92,7 @@ export default function AdminBrandsPage() {
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
-        if (file.size > 5 * 1024 * 1024) { alert("L'image est trop grande (Max 5MB)."); return; }
+        if (file.size > 20 * 1024 * 1024) { alert("L'image est trop grande (Max 20MB)."); return; }
 
         setIsUploading(true);
         try {
@@ -111,7 +111,7 @@ export default function AdminBrandsPage() {
     const handleEditFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
-        if (file.size > 5 * 1024 * 1024) { alert("L'image est trop grande (Max 5MB)."); return; }
+        if (file.size > 20 * 1024 * 1024) { alert("L'image est trop grande (Max 20MB)."); return; }
 
         setIsEditUploading(true);
         try {
