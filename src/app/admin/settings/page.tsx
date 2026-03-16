@@ -181,7 +181,8 @@ export default function AdminSettingsPage() {
 
             const { error } = await supabase
                 .from("website_settings")
-                .upsert(updates, { onConflict: "id" });
+                .update(updates)
+                .eq("id", 1);
 
             if (error) {
                 if (error.message.includes("does not exist") && (error.message.includes("telegram_bot_token") || error.message.includes("telegram_chat_id"))) {
@@ -218,7 +219,8 @@ export default function AdminSettingsPage() {
         try {
             const { error } = await supabase
                 .from("website_settings")
-                .upsert(updates, { onConflict: "id" });
+                .update(updates)
+                .eq("id", 1);
 
             if (error) throw error;
             await refreshSettings();
