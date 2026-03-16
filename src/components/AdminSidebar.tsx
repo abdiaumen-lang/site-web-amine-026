@@ -21,6 +21,7 @@ export default function AdminSidebar({ isMobileMenuOpen, setIsMobileMenuOpen }: 
         { label: 'Communes', icon: 'map', href: '/admin/communes' },
         { label: 'Marques', icon: 'loyalty', href: '/admin/brands' },
         { label: 'Codes Promo', icon: 'confirmation_number', href: '/admin/promo-codes' },
+        { label: 'Statistiques', icon: 'bar_chart', href: '/admin/analytics' },
         { label: 'Paramètres', icon: 'settings', href: '/admin/settings' },
     ];
 

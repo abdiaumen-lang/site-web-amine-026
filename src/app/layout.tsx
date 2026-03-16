@@ -6,6 +6,7 @@ import { SettingsProvider } from "@/context/SettingsContext";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import ThemeInjector from "@/components/ThemeInjector";
 import FacebookPixel from "@/components/FacebookPixel";
+import VisitorTracker from "@/components/VisitorTracker";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -58,6 +59,7 @@ export default function RootLayout({
         className={`${inter.variable} bg-white md:dark:bg-slate-900 font-display text-slate-900 md:dark:text-slate-100 antialiased overflow-x-hidden`}
       >
         <SettingsProvider>
+          <VisitorTracker />
           <ThemeInjector />
           <FacebookPixel />
           {children}
