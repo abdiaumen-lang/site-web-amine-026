@@ -85,12 +85,12 @@ export default function AnimatedBrandsMarquee() {
                                 loading="lazy"
                                 className="object-contain mix-blend-multiply dark:mix-blend-normal"
                                 style={{
-                                    width: `${Math.min(brand.width, 150)}px`,
-                                    height: `${Math.min(brand.height, 80)}px`
+                                    width: `${Math.min(brand.width, 220)}px`,
+                                    height: `${Math.min(brand.height, 120)}px`
                                 }}
                             />
                             {brand.name && (
-                                <span className="text-sm font-medium text-slate-600 dark:text-slate-300">
+                                <span className="text-base font-semibold text-slate-700 dark:text-slate-200 mt-1">
                                     {brand.name}
                                 </span>
                             )}
