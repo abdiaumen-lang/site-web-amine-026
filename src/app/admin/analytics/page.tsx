@@ -13,6 +13,7 @@ interface Visit {
     created_at: string;
     path: string;
     event_type: string;
+    event_data?: any;
     user_agent: string;
     browser: string;
     os: string;
@@ -100,7 +101,20 @@ export default function AdminAnalyticsPage() {
         return acc;
     }, {} as Record<string, number>);
     const topPages = Object.entries(pagesCount)
-        .sort(([, a], [, b]) => b - a)
+        .sort(([, a], [, b]) => (b as number) - (a as number))
+        .slice(0, 5);
+
+    // Top Products
+    const productViews = visits.filter(v => v.event_type === 'view_item');
+    const productsCount = productViews.reduce((acc, visit) => {
+        const eventData = visit.event_data as { product_id?: number, product_name?: string } | null;
+        if (eventData && eventData.product_name) {
+            acc[eventData.product_name] = (acc[eventData.product_name] || 0) + 1;
+        }
+        return acc;
+    }, {} as Record<string, number>);
+    const topProducts = Object.entries(productsCount)
+        .sort(([, a], [, b]) => (b as number) - (a as number))
         .slice(0, 5);
 
     // Devices
@@ -245,6 +259,40 @@ export default function AdminAnalyticsPage() {
                                                         <tr key={path} className="hover:bg-stone-50/50 transition-colors">
                                                             <td className="px-5 py-3 text-sm text-text-main font-medium max-w-[200px] truncate" title={path}>{path}</td>
                                                             <td className="px-5 py-3 text-sm text-text-muted text-right font-bold">{count}</td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
+                                        )}
+                                    </div>
+                                </div>
+
+                                {/* Top Products */}
+                                <div className="bg-surface-light rounded-xl border border-stone-200 shadow-sm overflow-hidden flex flex-col lg:col-span-2">
+                                    <div className="p-4 border-b border-stone-100 flex items-center justify-between bg-stone-50/50">
+                                        <h3 className="font-bold text-text-main flex items-center gap-2">
+                                            <span className="material-symbols-outlined text-admin-primary">shopping_bag</span>
+                                            Produits les plus consultés
+                                        </h3>
+                                    </div>
+                                    <div className="p-0">
+                                        {isLoading ? (
+                                            <div className="p-8 text-center text-text-muted"><span className="material-symbols-outlined animate-spin text-3xl">autorenew</span></div>
+                                        ) : topProducts.length === 0 ? (
+                                            <div className="p-8 text-center text-text-muted">Aucune donnée sur les produits</div>
+                                        ) : (
+                                            <table className="w-full text-left">
+                                                <thead className="bg-stone-50 text-xs uppercase text-text-muted">
+                                                    <tr>
+                                                        <th className="px-5 py-3 font-semibold">Produit</th>
+                                                        <th className="px-5 py-3 font-semibold text-right">Vues</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody className="divide-y divide-stone-100">
+                                                    {topProducts.map(([name, count]) => (
+                                                        <tr key={name} className="hover:bg-stone-50/50 transition-colors">
+                                                            <td className="px-5 py-3 text-sm text-text-main font-medium max-w-[200px] truncate" title={name}>{name as string}</td>
+                                                            <td className="px-5 py-3 text-sm text-text-muted text-right font-bold">{count as React.ReactNode}</td>
                                                         </tr>
                                                     ))}
                                                 </tbody>

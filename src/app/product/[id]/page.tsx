@@ -14,7 +14,7 @@ import VideoGallery from "@/components/VideoGallery";
 import LandingFeatures from "@/components/LandingFeatures";
 import LandingTestimonials from "@/components/LandingTestimonials";
 import InteractiveStarRating from "@/components/InteractiveStarRating";
-
+import ProductViewTracker from "@/components/ProductViewTracker";
 
 export const revalidate = 60; // Cache the product page for 60 seconds for ultra-fast edge loading
 
@@ -53,6 +53,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
 
     return (
         <div className="bg-background-light dark:bg-background-dark text-text-main font-sans min-h-screen flex flex-col">
+            <ProductViewTracker productId={product.id} productName={product.name} />
             <ProductHeader />
 
             <main className="flex-1 max-w-[1440px] mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 md:py-12">
